@@ -5,17 +5,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 import android.widget.Button;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements PadAdapter.ItemClickListener {
 
     public static final int ADD_REQUEST_CODE = 1;
     ArrayList<Pad> pads;
     RecyclerView rv;
+    PadAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,11 @@ public class MainActivity extends AppCompatActivity{
         pads = new ArrayList<>();
 
         rv = (RecyclerView) findViewById(R.id.pads_list);
+        rv.setLayoutManager(new GridLayoutManager(this, 3));
+        adapter = new PadAdapter(this, pads);
+        adapter.setClickListener(this);
+        rv.setAdapter(adapter);
+
 
         Button add = (Button) findViewById(R.id.add_button);
 
@@ -42,13 +50,21 @@ public class MainActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == ADD_REQUEST_CODE) {
-            if(resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK) {
                 String name = data.getStringExtra("name");
                 pads.add(new Pad(name));
+                adapter = new PadAdapter(this, pads);
+                adapter.setClickListener(this);
+                rv.setAdapter(adapter);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }
         }
     }//onActivityResult
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
 }
