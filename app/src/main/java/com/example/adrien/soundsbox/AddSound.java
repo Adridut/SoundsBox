@@ -14,7 +14,7 @@ import android.widget.EditText;
 
 public class AddSound extends Activity {
 
-    Button save;
+    Button save, back;
     EditText name;
 
     @Override
@@ -24,6 +24,7 @@ public class AddSound extends Activity {
 
         name = (EditText) findViewById(R.id.sound_name);
         save = (Button) findViewById(R.id.save_button);
+        back = (Button) findViewById(R.id.back_button);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,6 +32,15 @@ public class AddSound extends Activity {
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("name", String.valueOf(name.getText()));
                 setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, returnIntent);
                 finish();
             }
         });

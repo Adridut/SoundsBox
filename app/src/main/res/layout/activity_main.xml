@@ -27,7 +27,9 @@
         android:layout_alignParentRight="true"
         android:background="@color/colorAccent"
         android:text="Add"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:layout_margin="16dp"/>
+
 
 
 </RelativeLayout>
