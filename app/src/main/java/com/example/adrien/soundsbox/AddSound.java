@@ -27,7 +27,7 @@ public class AddSound extends Activity {
     String mFileName;
     EditText name;
     boolean isRecordActive = false;
-    boolean isPlayActive = false;
+    int fileNumber = 0;
 
     private MediaRecorder mRecorder = null;
     private MediaPlayer   mPlayer = null;
@@ -55,16 +55,12 @@ public class AddSound extends Activity {
         record = (Button) findViewById(R.id.recordButton);
         play = (Button) findViewById(R.id.play);
 
-
-        // Record to the external cache directory for visibility
-        mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/audiorecordtest.3gp";
-
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("name", String.valueOf(name.getText()));
+                returnIntent.putExtra("fileName", mFileName);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
@@ -94,7 +90,6 @@ public class AddSound extends Activity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isPlayActive = !isPlayActive;
                     startPlaying();
             }
         });
@@ -113,16 +108,12 @@ public class AddSound extends Activity {
 
     }
 
-
-    private void onRecord(boolean start) {
-        if (start) {
-            startRecording();
-        } else {
-            stopRecording();
-        }
-    }
-
     private void startRecording() {
+
+        fileNumber++;
+        mFileName = getExternalCacheDir().getAbsolutePath();
+        mFileName += "soundFile" + String.valueOf(fileNumber)+".3gp";
+
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -155,9 +146,17 @@ public class AddSound extends Activity {
         }
     }
 
-    private void stopPlaying() {
-        mPlayer.release();
-        mPlayer = null;
-    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mRecorder != null) {
+            mRecorder.release();
+            mRecorder = null;
+        }
 
+        if (mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
+        }
+    }
 }

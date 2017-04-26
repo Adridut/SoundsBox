@@ -53,6 +53,7 @@ public class PadAdapter extends RecyclerView.Adapter<PadAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
             pad = (Button) itemView.findViewById(R.id.pad);
+            pad.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
 

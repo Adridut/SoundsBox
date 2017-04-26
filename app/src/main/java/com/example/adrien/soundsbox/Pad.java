@@ -6,9 +6,10 @@ package com.example.adrien.soundsbox;
 
 public class Pad {
 
-    String name;
+    String name, fileName;
 
-    public Pad(String name){
+    public Pad(String name, String fileName){
         this.name = name;
+        this.fileName = fileName;
     }
 }
