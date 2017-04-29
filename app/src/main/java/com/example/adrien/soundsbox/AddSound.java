@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,14 +22,12 @@ import java.io.IOException;
 
 public class AddSound extends Activity {
 
-    Button save, back, record, play;
+    Button save, back, record;
     String mFileName;
     EditText name;
     boolean isRecordActive = false;
-    int fileNumber = 0;
 
     private MediaRecorder mRecorder = null;
-    private MediaPlayer   mPlayer = null;
 
     private static final String LOG_TAG = "AudioRecordTest";
 
@@ -53,7 +50,7 @@ public class AddSound extends Activity {
         save = (Button) findViewById(R.id.save_button);
         back = (Button) findViewById(R.id.back_button);
         record = (Button) findViewById(R.id.recordButton);
-        play = (Button) findViewById(R.id.play);
+
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,17 +80,11 @@ public class AddSound extends Activity {
                     startRecording();
                 } else {
                     stopRecording();
+                    save.setEnabled(true);
+                    save.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 }
             }
         });
-
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    startPlaying();
-            }
-        });
-
     }
 
     @Override
@@ -110,9 +101,8 @@ public class AddSound extends Activity {
 
     private void startRecording() {
 
-        fileNumber++;
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "soundFile" + String.valueOf(fileNumber)+".3gp";
+        mFileName += String.valueOf(name.getText())+".3gp";
 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -135,16 +125,6 @@ public class AddSound extends Activity {
         mRecorder = null;
     }
 
-    private void startPlaying() {
-        mPlayer = new MediaPlayer();
-        try {
-            mPlayer.setDataSource(mFileName);
-            mPlayer.prepare();
-            mPlayer.start();
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
-        }
-    }
 
     @Override
     public void onStop() {
@@ -152,11 +132,6 @@ public class AddSound extends Activity {
         if (mRecorder != null) {
             mRecorder.release();
             mRecorder = null;
-        }
-
-        if (mPlayer != null) {
-            mPlayer.release();
-            mPlayer = null;
         }
     }
 }

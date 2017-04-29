@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
-                //TODO Create a dialog with an editText and a record button
             }
         }
     }//onActivityResult

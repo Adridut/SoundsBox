@@ -13,31 +13,27 @@
         android:padding="5dp"
         android:maxLines="1"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:id="@+id/recordButton"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:padding="5dp"/>
+        android:layout_margin="25dp"
+        android:src="@drawable/ic_mic_white_36dp"
+        android:background="@drawable/rounded_button" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/play"
-        android:layout_below="@+id/recordButton"
-        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/save_button"
         android:text="Save"
-        android:background="@color/colorAccent"
         android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp"
+        android:enabled="false"/>
 
     <Button
         android:layout_width="wrap_content"
