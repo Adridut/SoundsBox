@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import java.io.IOException;
 
@@ -22,7 +23,8 @@ import java.io.IOException;
 
 public class AddSound extends Activity {
 
-    Button save, back, record;
+    Button save, back;
+    ImageButton record;
     String mFileName;
     EditText name;
     boolean isRecordActive = false;
@@ -49,7 +51,7 @@ public class AddSound extends Activity {
         name = (EditText) findViewById(R.id.sound_name);
         save = (Button) findViewById(R.id.save_button);
         back = (Button) findViewById(R.id.back_button);
-        record = (Button) findViewById(R.id.recordButton);
+        record = (ImageButton) findViewById(R.id.recordButton);
 
 
         save.setOnClickListener(new View.OnClickListener() {
