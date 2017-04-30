@@ -9,7 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         rv.setAdapter(adapter);
 
 
-        Button add = (Button) findViewById(R.id.add_button);
+        ImageButton add = (ImageButton) findViewById(R.id.add_button);
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -23,8 +23,8 @@ import java.io.IOException;
 
 public class AddSound extends Activity {
 
-    Button save, back;
-    ImageButton record;
+    Button back;
+    ImageButton record, save;
     String mFileName;
     EditText name;
     boolean isRecordActive = false;
@@ -49,7 +49,7 @@ public class AddSound extends Activity {
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
         name = (EditText) findViewById(R.id.sound_name);
-        save = (Button) findViewById(R.id.save_button);
+        save = (ImageButton) findViewById(R.id.save_button);
         back = (Button) findViewById(R.id.back_button);
         record = (ImageButton) findViewById(R.id.recordButton);
 
@@ -76,14 +76,16 @@ public class AddSound extends Activity {
 
         record.setOnClickListener(new View.OnClickListener() {
             @Override
+            //TODO replace by setOnLongClickListener
             public void onClick(View v) {
                 isRecordActive = !isRecordActive;
                 if (isRecordActive) {
                     startRecording();
+                    record.setImageResource(R.drawable.ic_mic_off_white_36dp);
                 } else {
                     stopRecording();
-                    save.setEnabled(true);
-                    save.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    record.setImageResource(R.drawable.ic_mic_white_36dp);
+                    save.setVisibility(View.VISIBLE);
                 }
             }
         });

@@ -14,8 +14,8 @@
         android:maxLines="1"/>
 
     <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:id="@+id/recordButton"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
@@ -24,16 +24,17 @@
         android:background="@drawable/rounded_button" />
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/save_button"
         android:text="Save"
-        android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:enabled="false"/>
+        android:src="@drawable/ic_done_white_24dp"
+        android:background="@drawable/rounded_button"
+        android:visibility="gone"/>
 
     <Button
         android:layout_width="wrap_content"
