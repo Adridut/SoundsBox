@@ -57,6 +57,7 @@ public class AddSound extends Activity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopRecording();
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("name", String.valueOf(name.getText()));
                 returnIntent.putExtra("fileName", mFileName);
@@ -81,10 +82,6 @@ public class AddSound extends Activity {
                 isRecordActive = !isRecordActive;
                 if (isRecordActive) {
                     startRecording();
-                    record.setImageResource(R.drawable.ic_mic_off_white_36dp);
-                } else {
-                    stopRecording();
-                    record.setImageResource(R.drawable.ic_mic_white_36dp);
                     save.setVisibility(View.VISIBLE);
                 }
             }
