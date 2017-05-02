@@ -77,7 +77,6 @@ public class AddSound extends Activity {
 
         record.setOnClickListener(new View.OnClickListener() {
             @Override
-            //TODO replace by setOnLongClickListener
             public void onClick(View v) {
                 isRecordActive = !isRecordActive;
                 if (isRecordActive) {

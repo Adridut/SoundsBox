@@ -23,10 +23,9 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     PadAdapter adapter;
     String mFileName;
 
-    private MediaPlayer   mPlayer = null;
+    private MediaPlayer mPlayer = null;
 
     private static final String LOG_TAG = "AudioRecordTest";
-
 
 
     @Override
@@ -39,13 +38,14 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         rv = (RecyclerView) findViewById(R.id.pads_list);
 
         rv.addOnItemTouchListener(
-                new RecyclerItemClickListener(getApplicationContext(), rv ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        mFileName = pads.get(position).fileName;
-                        startPlaying();
+                new RecyclerItemClickListener(getApplicationContext(), rv, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                       startPlaying();
                     }
 
-                    @Override public void onLongItemClick(View view, int position) {
+                    @Override
+                    public void onLongItemClick(View view, int position) {
                         // do whatever
                     }
                 })
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopPlaying();
                 Intent i = new Intent(getApplicationContext(), AddSound.class);
                 startActivityForResult(i, ADD_REQUEST_CODE);
             }
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             if (resultCode == Activity.RESULT_OK) {
                 String name = data.getStringExtra("name");
                 String mfileName = data.getStringExtra("fileName");
-                pads.add(new Pad(name, mfileName));
+                pads.add(new Pad(name, mfileName, false));
                 adapter = new PadAdapter(this, pads);
                 adapter.setClickListener(this);
                 rv.setAdapter(adapter);
@@ -99,6 +100,13 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             mPlayer.start();
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
+        }
+    }
+
+    private void stopPlaying() {
+        if (mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
         }
     }
 }

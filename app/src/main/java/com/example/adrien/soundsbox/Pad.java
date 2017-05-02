@@ -7,9 +7,11 @@ package com.example.adrien.soundsbox;
 public class Pad {
 
     String name, fileName;
+    boolean isPlaying;
 
-    public Pad(String name, String fileName){
+    public Pad(String name, String fileName, boolean isPlaying){
         this.name = name;
         this.fileName = fileName;
+        this.isPlaying = isPlaying;
     }
 }
