@@ -44,13 +44,24 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                     public void onItemClick(View view, int position) {
                         mFileName = pads.get(position).fileName;
                         if (pads.get(position).isPlaying) {
-                            stopPlaying();
+                            if (pads.get(position).mediaPlayer != null) {
+                                pads.get(position).mediaPlayer.release();
+                                pads.get(position).mediaPlayer = null;
+                            }
                             pads.get(position).color = Color.parseColor("#3F51B5");
                             pads.get(position).isPlaying = false;
                         } else {
-                            startPlaying();
+                            pads.get(position).mediaPlayer = new MediaPlayer();
+                            try {
+                                pads.get(position).mediaPlayer.setDataSource(mFileName);
+                                pads.get(position).mediaPlayer.prepare();
+                                pads.get(position).mediaPlayer.start();
+                            } catch (IOException e) {
+                                Log.e(LOG_TAG, "prepare() failed");
+                            }
                             pads.get(position).color = Color.parseColor("#FF4081");
                             pads.get(position).isPlaying = true;
+                            Log.i("DURATION", String.valueOf(pads.get(position).mediaPlayer.getDuration()));
                         }
                         rv.setAdapter(adapter);
                     }
@@ -87,8 +98,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             if (resultCode == Activity.RESULT_OK) {
                 String name = data.getStringExtra("name");
                 String mfileName = data.getStringExtra("fileName");
-                mPlayer = (MediaPlayer) data.getSerializableExtra("mPlayer");
-                pads.add(new Pad(name, mfileName, false, Color.parseColor("#3F51B5")));
+                pads.add(new Pad(name, mfileName, false, Color.parseColor("#3F51B5"), mPlayer));
                 adapter = new PadAdapter(this, pads);
                 adapter.setClickListener(this);
                 rv.setAdapter(adapter);
@@ -102,17 +112,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     @Override
     public void onItemClick(View view, int position) {
 
-    }
-
-    private void startPlaying() {
-        mPlayer = new MediaPlayer();
-        try {
-            mPlayer.setDataSource(mFileName);
-            mPlayer.prepare();
-            mPlayer.start();
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
-        }
     }
 
     private void stopPlaying() {
