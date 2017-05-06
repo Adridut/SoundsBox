@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
     private static final String LOG_TAG = "AudioRecordTest";
 
+    //TODO save sounds
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                             }
                             pads.get(position).color = Color.parseColor("#FF4081");
                             pads.get(position).isPlaying = true;
-                            Log.i("DURATION", String.valueOf(pads.get(position).mediaPlayer.getDuration()));
                         }
                         rv.setAdapter(adapter);
                     }
@@ -84,7 +85,15 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopPlaying();
+                for (Pad pad : pads){
+                    if (pad.mediaPlayer != null){
+                        pad.mediaPlayer.release();
+                        pad.mediaPlayer = null;
+                        pad.color = Color.parseColor("#3F51B5");
+                        rv.setAdapter(adapter);
+                    }
+
+                }
                 Intent i = new Intent(getApplicationContext(), AddSound.class);
                 startActivityForResult(i, ADD_REQUEST_CODE);
             }
@@ -114,11 +123,5 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
     }
 
-    private void stopPlaying() {
-        if (mPlayer != null) {
-            mPlayer.release();
-            mPlayer = null;
-        }
-    }
 }
 
