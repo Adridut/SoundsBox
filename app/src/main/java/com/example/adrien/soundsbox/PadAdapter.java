@@ -1,6 +1,7 @@
 package com.example.adrien.soundsbox;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,8 @@ public class PadAdapter extends RecyclerView.Adapter<PadAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String animal = mPads.get(position).name;
+        holder.pad.setBackgroundColor(mPads.get(position).color);
+        holder.pad.setTextColor(Color.WHITE);
         holder.pad.setText(animal);
     }
 

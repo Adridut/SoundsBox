@@ -2,6 +2,7 @@ package com.example.adrien.soundsbox;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -41,16 +42,26 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                 new RecyclerItemClickListener(getApplicationContext(), rv, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                       startPlaying();
+                        mFileName = pads.get(position).fileName;
+                        if (pads.get(position).isPlaying) {
+                            stopPlaying();
+                            pads.get(position).color = Color.parseColor("#3F51B5");
+                            pads.get(position).isPlaying = false;
+                        } else {
+                            startPlaying();
+                            pads.get(position).color = Color.parseColor("#FF4081");
+                            pads.get(position).isPlaying = true;
+                        }
+                        rv.setAdapter(adapter);
                     }
 
                     @Override
                     public void onLongItemClick(View view, int position) {
                         // do whatever
+                        //TODO remove sound
                     }
                 })
         );
-
         rv.setLayoutManager(new GridLayoutManager(this, 3));
         adapter = new PadAdapter(this, pads);
         adapter.setClickListener(this);
@@ -76,7 +87,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             if (resultCode == Activity.RESULT_OK) {
                 String name = data.getStringExtra("name");
                 String mfileName = data.getStringExtra("fileName");
-                pads.add(new Pad(name, mfileName, false));
+                mPlayer = (MediaPlayer) data.getSerializableExtra("mPlayer");
+                pads.add(new Pad(name, mfileName, false, Color.parseColor("#3F51B5")));
                 adapter = new PadAdapter(this, pads);
                 adapter.setClickListener(this);
                 rv.setAdapter(adapter);
