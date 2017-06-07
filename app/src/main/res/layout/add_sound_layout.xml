@@ -36,15 +36,4 @@
         android:background="@drawable/rounded_button"
         android:visibility="gone"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/back_button"
-        android:text="Back"
-        android:background="@color/colorAccent"
-        android:textColor="@android:color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="16dp"/>
-
 </RelativeLayout>

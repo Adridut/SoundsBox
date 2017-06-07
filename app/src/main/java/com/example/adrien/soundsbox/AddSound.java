@@ -50,7 +50,6 @@ public class AddSound extends Activity {
 
         name = (EditText) findViewById(R.id.sound_name);
         save = (ImageButton) findViewById(R.id.save_button);
-        back = (Button) findViewById(R.id.back_button);
         record = (ImageButton) findViewById(R.id.recordButton);
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -61,15 +60,6 @@ public class AddSound extends Activity {
                 returnIntent.putExtra("name", String.valueOf(name.getText()));
                 returnIntent.putExtra("fileName", mFileName);
                 setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                setResult(Activity.RESULT_CANCELED, returnIntent);
                 finish();
             }
         });
