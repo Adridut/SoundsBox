@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     RecyclerView rv;
     PadAdapter adapter;
     String mFileName;
+    int count = 0;
+
 
     private MediaPlayer mPlayer = null;
 
@@ -95,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
                 }
                 Intent i = new Intent(getApplicationContext(), AddSound.class);
+                i.putExtra("Count", count);
+                count ++;
                 startActivityForResult(i, ADD_REQUEST_CODE);
             }
         });

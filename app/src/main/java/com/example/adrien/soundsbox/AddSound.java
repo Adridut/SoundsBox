@@ -53,7 +53,6 @@ public class AddSound extends Activity {
         back = (Button) findViewById(R.id.back_button);
         record = (ImageButton) findViewById(R.id.recordButton);
 
-
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,8 +100,13 @@ public class AddSound extends Activity {
 
     private void startRecording() {
 
+        int count = getIntent().getIntExtra("Count", 0);
+
+        Log.i("SoundName", String.valueOf(count));
+
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += String.valueOf(name.getText())+".3gp";
+        mFileName += String.valueOf(name.getText()) + String.valueOf(count) +".3gp";
+        Log.i("SoundName", mFileName);
 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
