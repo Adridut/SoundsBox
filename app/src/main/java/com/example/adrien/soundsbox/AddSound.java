@@ -37,8 +37,7 @@ public class AddSound extends Activity {
 
     // Requesting permission to RECORD_AUDIO
     private boolean permissionToRecordAccepted = false;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
-
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
 
     @Override
@@ -79,12 +78,12 @@ public class AddSound extends Activity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_RECORD_AUDIO_PERMISSION:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 break;
         }
-        if (!permissionToRecordAccepted ) finish();
+        if (!permissionToRecordAccepted) finish();
 
     }
 
@@ -92,10 +91,7 @@ public class AddSound extends Activity {
 
         int count = getIntent().getIntExtra("Count", 0);
 
-        Log.i("SoundName", String.valueOf(count));
-
-        mFileName = getExternalCacheDir().getAbsolutePath() + "/cache" + String.valueOf(name.getText()) + String.valueOf(count) +".3gp";
-        Log.i("SoundName", mFileName);
+        mFileName = getExternalCacheDir().getAbsolutePath() + "/cache" + String.valueOf(name.getText()) + String.valueOf(count) + ".3gp";
 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);

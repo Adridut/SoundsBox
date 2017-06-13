@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     int count = 0;
     File soundsDir;
 
-
     private MediaPlayer mPlayer = null;
 
     private static final String LOG_TAG = "AudioRecordTest";
@@ -37,15 +36,16 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // retrieving files
         soundsDir = new File(getExternalCacheDir().getAbsolutePath());
         File[] soundsFiles = soundsDir.listFiles();
 
         pads = new ArrayList<>();
 
-        for (File f: soundsFiles){
+        for (File f : soundsFiles) {
             String name = f.getName();
             if (name.endsWith(".3gp"))
-                pads.add(new Pad(name.substring(5, name.length() - 5), name, false, Color.parseColor("#3F51B5"), mPlayer, f));
+                pads.add(new Pad(name.substring(5, name.length() - 5), getExternalCacheDir().getAbsolutePath() + "/cache" + name.substring(5), false, Color.parseColor("#3F51B5"), mPlayer, f));
         }
 
         rv = (RecyclerView) findViewById(R.id.pads_list);
@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-                        // do whatever
                         //TODO add dialog or button
                         pads.get(position).file.delete();
                         pads.remove(position);
@@ -98,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (Pad pad : pads){
-                    if (pad.mediaPlayer != null){
+                for (Pad pad : pads) {
+                    if (pad.mediaPlayer != null) {
                         pad.mediaPlayer.release();
                         pad.mediaPlayer = null;
                         pad.color = Color.parseColor("#3F51B5");
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                 }
                 Intent i = new Intent(getApplicationContext(), AddSound.class);
                 i.putExtra("Count", count);
-                count ++;
+                count++;
                 startActivityForResult(i, ADD_REQUEST_CODE);
             }
         });
