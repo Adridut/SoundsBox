@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,21 +25,28 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     PadAdapter adapter;
     String mFileName;
     int count = 0;
+    File soundsDir;
 
 
     private MediaPlayer mPlayer = null;
 
     private static final String LOG_TAG = "AudioRecordTest";
 
-    //TODO save sounds
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        soundsDir = new File(getExternalCacheDir().getAbsolutePath());
+        File[] soundsFiles = soundsDir.listFiles();
+
         pads = new ArrayList<>();
+
+        for (File f: soundsFiles){
+            String name = f.getName();
+            if (name.endsWith(".3gp"))
+                pads.add(new Pad(name.substring(5, name.length() - 5), name, false, Color.parseColor("#3F51B5"), mPlayer, f));
+        }
 
         rv = (RecyclerView) findViewById(R.id.pads_list);
 
@@ -72,7 +80,10 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                     @Override
                     public void onLongItemClick(View view, int position) {
                         // do whatever
-                        //TODO remove sound
+                        //TODO add dialog or button
+                        pads.get(position).file.delete();
+                        pads.remove(position);
+                        rv.setAdapter(adapter);
                     }
                 })
         );
@@ -111,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             if (resultCode == Activity.RESULT_OK) {
                 String name = data.getStringExtra("name");
                 String mfileName = data.getStringExtra("fileName");
-                pads.add(new Pad(name, mfileName, false, Color.parseColor("#3F51B5"), mPlayer));
+                pads.add(new Pad(name, mfileName, false, Color.parseColor("#3F51B5"), mPlayer, new File(mfileName)));
                 adapter = new PadAdapter(this, pads);
                 adapter.setClickListener(this);
                 rv.setAdapter(adapter);

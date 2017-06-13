@@ -94,8 +94,7 @@ public class AddSound extends Activity {
 
         Log.i("SoundName", String.valueOf(count));
 
-        mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += String.valueOf(name.getText()) + String.valueOf(count) +".3gp";
+        mFileName = getExternalCacheDir().getAbsolutePath() + "/cache" + String.valueOf(name.getText()) + String.valueOf(count) +".3gp";
         Log.i("SoundName", mFileName);
 
         mRecorder = new MediaRecorder();

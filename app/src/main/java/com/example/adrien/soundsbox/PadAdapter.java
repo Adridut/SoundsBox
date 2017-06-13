@@ -37,10 +37,10 @@ public class PadAdapter extends RecyclerView.Adapter<PadAdapter.ViewHolder> {
     // binds the data to the textview in each cell
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String animal = mPads.get(position).name;
+        String soundName = mPads.get(position).name;
         holder.pad.setBackgroundColor(mPads.get(position).color);
         holder.pad.setTextColor(Color.WHITE);
-        holder.pad.setText(animal);
+        holder.pad.setText(soundName);
     }
 
     // total number of cells
