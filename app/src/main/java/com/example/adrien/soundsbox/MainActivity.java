@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
     private static final String LOG_TAG = "AudioRecordTest";
 
+    //TODO make the colors res work
+    //TODO change the logo
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
                     @Override
                     public void onLongItemClick(View view, final int position) {
+                        //TODO add a list with play and modifie options
                         AlertDialog.Builder builder;
                             builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setTitle("Delete " + pads.get(position).name)

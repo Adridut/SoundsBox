@@ -63,6 +63,8 @@ public class AddSound extends Activity {
             }
         });
 
+
+        //TODO click again on record should stop the record and change the color
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
