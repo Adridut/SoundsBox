@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         for (File f : soundsFiles) {
             String name = f.getName();
             if (name.endsWith(".3gp"))
-                pads.add(new Pad(name.substring(0, name.length() - 5), getFilesDir().getAbsolutePath() + "/" + name, false, Color.parseColor("#3F51B5"), mPlayer, f));
+                pads.add(new Pad(name.substring(0, name.length() - 5), getFilesDir().getAbsolutePath() + "/" + name, false, Color.parseColor("#512DA8"), mPlayer, f));
         }
 
         rv = (RecyclerView) findViewById(R.id.pads_list);
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                 pads.get(position).mediaPlayer.release();
                                 pads.get(position).mediaPlayer = null;
                             }
-                            pads.get(position).color = Color.parseColor("#3F51B5");
+                            pads.get(position).color = Color.parseColor("#512DA8");
                             pads.get(position).isPlaying = false;
                         } else {
                             pads.get(position).mediaPlayer = new MediaPlayer();
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                             } catch (IOException e) {
                                 Log.e(LOG_TAG, "prepare() failed");
                             }
-                            pads.get(position).color = Color.parseColor("#FF4081");
+                            pads.get(position).color = Color.parseColor("#FF6E40");
                             pads.get(position).isPlaying = true;
                         }
                         rv.setAdapter(adapter);
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-                        //TODO add dialog or button
+                        //TODO add dialog(Play/Delete/Modifie) or button
                         pads.get(position).file.delete();
                         pads.remove(position);
                         rv.setAdapter(adapter);
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                     if (pad.mediaPlayer != null) {
                         pad.mediaPlayer.release();
                         pad.mediaPlayer = null;
-                        pad.color = Color.parseColor("#3F51B5");
+                        pad.color = Color.parseColor("#512DA8");
                         rv.setAdapter(adapter);
                     }
 
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             if (resultCode == Activity.RESULT_OK) {
                 String name = data.getStringExtra("name");
                 String mfileName = data.getStringExtra("fileName");
-                pads.add(new Pad(name, mfileName, false, Color.parseColor("#3F51B5"), mPlayer, new File(mfileName)));
+                pads.add(new Pad(name, mfileName, false, Color.parseColor("#512DA8"), mPlayer, new File(mfileName)));
                 adapter = new PadAdapter(this, pads);
                 adapter.setClickListener(this);
                 rv.setAdapter(adapter);
