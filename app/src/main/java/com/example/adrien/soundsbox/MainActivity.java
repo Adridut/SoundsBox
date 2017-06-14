@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         setContentView(R.layout.activity_main);
 
         // retrieving files
-        soundsDir = new File(getExternalCacheDir().getAbsolutePath());
+        soundsDir = new File(getFilesDir().getAbsolutePath());
         File[] soundsFiles = soundsDir.listFiles();
 
         pads = new ArrayList<>();
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         for (File f : soundsFiles) {
             String name = f.getName();
             if (name.endsWith(".3gp"))
-                pads.add(new Pad(name.substring(5, name.length() - 5), getExternalCacheDir().getAbsolutePath() + "/cache" + name.substring(5), false, Color.parseColor("#3F51B5"), mPlayer, f));
+                pads.add(new Pad(name.substring(0, name.length() - 5), getFilesDir().getAbsolutePath() + "/" + name, false, Color.parseColor("#3F51B5"), mPlayer, f));
         }
 
         rv = (RecyclerView) findViewById(R.id.pads_list);
