@@ -1,6 +1,8 @@
 package com.example.adrien.soundsbox;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     private static final String LOG_TAG = "AudioRecordTest";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -78,11 +80,23 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                     }
 
                     @Override
-                    public void onLongItemClick(View view, int position) {
-                        //TODO add dialog(Play/Delete/Modifie) or button
-                        pads.get(position).file.delete();
-                        pads.remove(position);
-                        rv.setAdapter(adapter);
+                    public void onLongItemClick(View view, final int position) {
+                        AlertDialog.Builder builder;
+                            builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle("Delete " + pads.get(position).name)
+                                .setMessage("Are you sure you want to delete this sound ?")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        pads.get(position).file.delete();
+                                        pads.remove(position);
+                                        rv.setAdapter(adapter);                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                    }
+                                })
+                                .show();
                     }
                 })
         );
