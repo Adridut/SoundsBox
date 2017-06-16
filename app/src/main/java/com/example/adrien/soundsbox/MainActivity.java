@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             String name = f.getName();
             if (name.endsWith(".3gp")) {
                 pads.add(new Pad(name.substring(0, name.length() - 5), getFilesDir().getAbsolutePath() + "/" + name, false, Color.parseColor("#512DA8"), mPlayer, f));
-                count = Integer.parseInt(name.substring(name.length() - 5, name.length() -4)) + 1;
+                count = Integer.parseInt(name.substring(name.length() - 5, name.length() - 4)) + 1;
             }
         }
 
@@ -95,24 +95,34 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                             pads.get(position).isPlaying = false;
                             rv.setAdapter(adapter);
                         }
-                        //TODO add a list with play and modifie options
+                        //TODO design dialog
                         AlertDialog.Builder builder;
                         builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setTitle("Delete " + pads.get(position).name)
-                                .setMessage("Are you sure you want to delete this sound ?")
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        builder.setTitle(pads.get(position).name)
+                                .setItems(getResources().getStringArray(R.array.actions_array), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        pads.get(position).file.delete();
-                                        pads.remove(position);
+                                        if (which == 0) {
+                                            mFileName = pads.get(position).fileName;
+                                            pads.get(position).mediaPlayer = new MediaPlayer();
+                                            try {
+                                                pads.get(position).mediaPlayer.setDataSource(mFileName);
+                                                pads.get(position).mediaPlayer.prepare();
+                                                pads.get(position).mediaPlayer.start();
+                                            } catch (IOException e) {
+                                                Log.e(LOG_TAG, "prepare() failed");
+                                            }
+                                            pads.get(position).color = getResources().getColor(R.color.colorAccent);
+                                            pads.get(position).isPlaying = true;
+                                        }
+                                        //TODO edit
+                                        if (which == 2) {
+                                            pads.get(position).file.delete();
+                                            pads.remove(position);
+                                        }
                                         rv.setAdapter(adapter);
                                     }
-                                })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // do nothing
-                                    }
-                                })
-                                .show();
+
+                                }).show();
                     }
                 })
         );

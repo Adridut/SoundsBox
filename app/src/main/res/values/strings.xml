@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Sounds Box</string>
     <string-array name="actions_array">
-        Delete
-        Play
-        Modifie
+        <item>Play</item>
+        <item>Edit</item>
+        <item>Delete</item>
     </string-array>
 </resources>
