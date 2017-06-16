@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
     private static final String LOG_TAG = "AudioRecordTest";
 
-    //TODO make the colors res work
     //TODO change the logo
 
     @Override
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             String name = f.getName();
             if (name.endsWith(".3gp")) {
                 pads.add(new Pad(name.substring(0, name.length() - 5), getFilesDir().getAbsolutePath() + "/" + name, false, Color.parseColor("#512DA8"), mPlayer, f));
-                //TODO update count
+                count = Integer.parseInt(name.substring(name.length() - 5, name.length() -4)) + 1;
             }
         }
 
