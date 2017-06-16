@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -114,6 +115,27 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                             pads.get(position).isPlaying = true;
                                         }
                                         //TODO edit
+                                        if (which == 1){
+                                            AlertDialog.Builder editBuilder = new AlertDialog.Builder(MainActivity.this);
+                                            // Get the layout inflater
+                                            LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+
+                                            // Inflate and set the layout for the dialog
+                                            // Pass null as the parent view because its going in the dialog layout
+                                            editBuilder.setView(inflater.inflate(R.layout.edit_dialog, null))
+                                                    // Add action buttons
+                                                    .setTitle("Edit" + pads.get(position).name)
+                                                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            // sign in the user ...
+                                                        }
+                                                    })
+                                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                        }
+                                                    }).show();
+                                        }
                                         if (which == 2) {
                                             AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(MainActivity.this);
                                             deleteBuilder.setTitle("Delete" + pads.get(position).name + " ?");
