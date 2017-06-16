@@ -20,7 +20,6 @@
         android:id="@+id/recordButton"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="10dp"
         android:layout_marginTop="45dp"
         android:src="@drawable/ic_mic_white_36dp"
         android:background="@drawable/rounded_accent_button" />
@@ -31,7 +30,9 @@
         android:id="@+id/record_text"
         android:layout_below="@+id/recordButton"
         android:layout_centerHorizontal="true"
-        android:text="Click to record"/>
+        android:gravity="center"
+        android:text="Click to record"
+        android:padding="25dp"/>
 
 
     <ImageButton

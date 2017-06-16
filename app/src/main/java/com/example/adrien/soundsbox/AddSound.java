@@ -57,9 +57,6 @@ public class AddSound extends Activity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isRecordActive) {
-                    stopRecording();
-                }
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("name", String.valueOf(name.getText()));
                 returnIntent.putExtra("fileName", mFileName);
@@ -78,12 +75,14 @@ public class AddSound extends Activity {
                     }
                     recordText.setText("Recording...");
                     startRecording();
-                    save.setVisibility(View.VISIBLE);
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         record.setBackground(getResources().getDrawable(R.drawable.rounded_accent_button));
-                        recordText.setText("Click to erase your last record and start a new one");
+                        recordText.setText("Save your record or click here again to erase it and start a new one");
                         stopRecording();
+                        if (save.getVisibility() == View.GONE){
+                            save.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
                 isRecordActive = !isRecordActive;
