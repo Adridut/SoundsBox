@@ -57,7 +57,9 @@ public class AddSound extends Activity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopRecording();
+                if (isRecordActive) {
+                    stopRecording();
+                }
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("name", String.valueOf(name.getText()));
                 returnIntent.putExtra("fileName", mFileName);
@@ -70,8 +72,7 @@ public class AddSound extends Activity {
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isRecordActive = !isRecordActive;
-                if (isRecordActive) {
+                if (!isRecordActive) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         record.setBackground(getResources().getDrawable(R.drawable.rounded_primary_button));
                     }
@@ -85,6 +86,7 @@ public class AddSound extends Activity {
                         stopRecording();
                     }
                 }
+                isRecordActive = !isRecordActive;
             }
         });
     }

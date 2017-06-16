@@ -87,16 +87,26 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
                     @Override
                     public void onLongItemClick(View view, final int position) {
+                        if (pads.get(position).isPlaying) {
+                            if (pads.get(position).mediaPlayer != null) {
+                                pads.get(position).mediaPlayer.release();
+                                pads.get(position).mediaPlayer = null;
+                            }
+                            pads.get(position).color = Color.parseColor("#512DA8");
+                            pads.get(position).isPlaying = false;
+                            rv.setAdapter(adapter);
+                        }
                         //TODO add a list with play and modifie options
                         AlertDialog.Builder builder;
-                            builder = new AlertDialog.Builder(MainActivity.this);
+                        builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setTitle("Delete " + pads.get(position).name)
                                 .setMessage("Are you sure you want to delete this sound ?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         pads.get(position).file.delete();
                                         pads.remove(position);
-                                        rv.setAdapter(adapter);                                    }
+                                        rv.setAdapter(adapter);
+                                    }
                                 })
                                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
