@@ -5,17 +5,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.io.IOException;
+
 
 /**
  * Created by adrien on 03/03/17.
@@ -23,10 +25,10 @@ import java.io.IOException;
 
 public class AddSound extends Activity {
 
-    Button back;
     ImageButton record, save;
     String mFileName;
     EditText name;
+    TextView recordText;
     boolean isRecordActive = false;
 
     private MediaRecorder mRecorder = null;
@@ -41,7 +43,7 @@ public class AddSound extends Activity {
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_sound_layout);
 
@@ -50,6 +52,7 @@ public class AddSound extends Activity {
         name = (EditText) findViewById(R.id.sound_name);
         save = (ImageButton) findViewById(R.id.save_button);
         record = (ImageButton) findViewById(R.id.recordButton);
+        recordText = (TextView) findViewById(R.id.record_text);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,14 +67,23 @@ public class AddSound extends Activity {
         });
 
 
-        //TODO click again on record should stop the record and change the color
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isRecordActive = !isRecordActive;
                 if (isRecordActive) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        record.setBackground(getResources().getDrawable(R.drawable.rounded_primary_button));
+                    }
+                    recordText.setText("Recording...");
                     startRecording();
                     save.setVisibility(View.VISIBLE);
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        record.setBackground(getResources().getDrawable(R.drawable.rounded_accent_button));
+                        recordText.setText("Click to erase your last record and start a new one");
+                        stopRecording();
+                    }
                 }
             }
         });

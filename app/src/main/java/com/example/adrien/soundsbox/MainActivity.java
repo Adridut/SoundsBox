@@ -49,9 +49,12 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
         for (File f : soundsFiles) {
             String name = f.getName();
-            if (name.endsWith(".3gp"))
+            if (name.endsWith(".3gp")) {
                 pads.add(new Pad(name.substring(0, name.length() - 5), getFilesDir().getAbsolutePath() + "/" + name, false, Color.parseColor("#512DA8"), mPlayer, f));
+                //TODO update count
+            }
         }
+
 
         rv = (RecyclerView) findViewById(R.id.pads_list);
 
