@@ -96,8 +96,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                             rv.setAdapter(adapter);
                         }
                         //TODO design dialog
-                        AlertDialog.Builder builder;
-                        builder = new AlertDialog.Builder(MainActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setTitle(pads.get(position).name)
                                 .setItems(getResources().getStringArray(R.array.actions_array), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -116,8 +115,21 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                         }
                                         //TODO edit
                                         if (which == 2) {
-                                            pads.get(position).file.delete();
-                                            pads.remove(position);
+                                            AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(MainActivity.this);
+                                            deleteBuilder.setTitle("Delete" + pads.get(position).name + " ?");
+                                            deleteBuilder.setMessage("Do you really want to delete this sound ?");
+                                            deleteBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    pads.get(position).file.delete();
+                                                    pads.remove(position);
+                                                    rv.setAdapter(adapter);
+                                                }
+                                            });
+                                            deleteBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    // User cancelled the dialog
+                                                }
+                                            }).show();
                                         }
                                         rv.setAdapter(adapter);
                                     }
