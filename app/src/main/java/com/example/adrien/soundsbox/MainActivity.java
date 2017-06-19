@@ -124,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                             // Inflate and set the layout for the dialog
                                             // Pass null as the parent view because its going in the dialog layout
                                             View editView = inflater.inflate(R.layout.edit_dialog, null);
-                                            EditText newName = (EditText) editView.findViewById(R.id.new_name);
-                                            
+                                            final EditText newName = (EditText) editView.findViewById(R.id.new_name);
+
                                             newName.setText(pads.get(position).name);
 
                                             editBuilder.setView(editView)
@@ -134,7 +134,13 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                                     .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int id) {
-                                                            // sign in the user ...
+                                                            String oldName = pads.get(position).name;
+                                                            pads.get(position).name = String.valueOf(newName.getText());
+                                                            pads.get(position).fileName = pads.get(position).fileName.replace(oldName, newName.getText());
+                                                            File newFile = new File(pads.get(position).fileName);
+                                                            pads.get(position).file.renameTo(newFile);
+                                                            rv.setAdapter(adapter);
+                                                            Log.i("FileName", pads.get(position).fileName);
                                                         }
                                                     })
                                                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
