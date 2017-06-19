@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import java.io.File;
@@ -122,7 +123,12 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
                                             // Inflate and set the layout for the dialog
                                             // Pass null as the parent view because its going in the dialog layout
-                                            editBuilder.setView(inflater.inflate(R.layout.edit_dialog, null))
+                                            View editView = inflater.inflate(R.layout.edit_dialog, null);
+                                            EditText newName = (EditText) editView.findViewById(R.id.new_name);
+                                            
+                                            newName.setText(pads.get(position).name);
+
+                                            editBuilder.setView(editView)
                                                     // Add action buttons
                                                     .setTitle("Edit" + pads.get(position).name)
                                                     .setPositiveButton("Save", new DialogInterface.OnClickListener() {
