@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     RecyclerView rv;
     PadAdapter adapter;
     String mFileName;
-    int count = 0;
     File soundsDir;
 
     private MediaPlayer mPlayer = null;
@@ -51,8 +50,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         for (File f : soundsFiles) {
             String name = f.getName();
             if (name.endsWith(".3gp")) {
-                pads.add(new Pad(name.substring(0, name.length() - 5), getFilesDir().getAbsolutePath() + "/" + name, false, Color.parseColor("#512DA8"), mPlayer, f));
-                count = Integer.parseInt(name.substring(name.length() - 5, name.length() - 4)) + 1;
+                pads.add(new Pad(name.substring(0, name.length() - 4), getFilesDir().getAbsolutePath() + "/" + name, false, Color.parseColor("#512DA8"), mPlayer, f));
             }
         }
 
@@ -136,11 +134,11 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                                         public void onClick(DialogInterface dialog, int id) {
                                                             String oldName = pads.get(position).name;
                                                             pads.get(position).name = String.valueOf(newName.getText());
-                                                            pads.get(position).fileName = pads.get(position).fileName.replace(oldName, newName.getText());
+                                                            pads.get(position).fileName = pads.get(position).file.getName().replace(oldName, newName.getText());
                                                             File newFile = new File(pads.get(position).fileName);
                                                             pads.get(position).file.renameTo(newFile);
                                                             rv.setAdapter(adapter);
-                                                            Log.i("FileName", pads.get(position).fileName);
+                                                            Log.i("FileName", pads.get(position).file.getName());
                                                         }
                                                     })
                                                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -193,8 +191,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
                 }
                 Intent i = new Intent(getApplicationContext(), AddSound.class);
-                i.putExtra("Count", count);
-                count++;
                 startActivityForResult(i, ADD_REQUEST_CODE);
             }
         });

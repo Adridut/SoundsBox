@@ -104,9 +104,7 @@ public class AddSound extends Activity {
 
     private void startRecording() {
 
-        int count = getIntent().getIntExtra("Count", 0);
-
-        mFileName = getFilesDir().getAbsolutePath() + "/" + String.valueOf(name.getText()) + String.valueOf(count) + ".3gp";
+        mFileName = getFilesDir().getAbsolutePath() + "/" + String.valueOf(name.getText()) + ".3gp";
 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
