@@ -128,17 +128,18 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
                                             editBuilder.setView(editView)
                                                     // Add action buttons
-                                                    .setTitle("Edit" + pads.get(position).name)
+                                                    .setTitle("Edit " + pads.get(position).name)
                                                     .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int id) {
                                                             String oldName = pads.get(position).name;
+                                                            String fileName = pads.get(position).fileName;
                                                             pads.get(position).name = String.valueOf(newName.getText());
-                                                            pads.get(position).fileName = pads.get(position).file.getName().replace(oldName, newName.getText());
+                                                            pads.get(position).fileName = fileName.substring(0, fileName.length() - (oldName.length() + 4)) + newName.getText()  + ".3gp";
                                                             File newFile = new File(pads.get(position).fileName);
                                                             pads.get(position).file.renameTo(newFile);
                                                             rv.setAdapter(adapter);
-                                                            Log.i("FileName", pads.get(position).file.getName());
+                                                            Log.i("FileName", pads.get(position).fileName);
                                                         }
                                                     })
                                                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                         }
                                         if (which == 2) {
                                             AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(MainActivity.this);
-                                            deleteBuilder.setTitle("Delete" + pads.get(position).name + " ?");
+                                            deleteBuilder.setTitle("Delete " + pads.get(position).name + " ?");
                                             deleteBuilder.setMessage("Do you really want to delete this sound ?");
                                             deleteBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {

@@ -54,6 +54,7 @@ public class AddSound extends Activity {
         record = (ImageButton) findViewById(R.id.recordButton);
         recordText = (TextView) findViewById(R.id.record_text);
 
+        //TODO force the user to name the sound (not already used) and edit the fileName
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
