@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -67,26 +68,36 @@ public class AddSound extends Activity {
         });
 
         //TODO onLongClick
-        record.setOnClickListener(new View.OnClickListener() {
+        record.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                if (!isRecordActive) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        record.setBackground(getResources().getDrawable(R.drawable.rounded_primary_button));
-                    }
-                    recordText.setText("Recording...");
-                    startRecording();
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        record.setBackground(getResources().getDrawable(R.drawable.rounded_accent_button));
+            public boolean onLongClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    record.setBackground(getResources().getDrawable(R.drawable.rounded_primary_button));
+                }
+                recordText.setText("Recording...");
+                save.setVisibility(View.GONE);
+                startRecording();
+                isRecordActive = true;
+                return false;
+            }
+        });
+        record.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (isRecordActive) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            record.setBackground(getResources().getDrawable(R.drawable.rounded_accent_button));
+                        }
                         recordText.setText("Save your record or click here again to erase it and start a new one");
                         stopRecording();
                         if (save.getVisibility() == View.GONE){
                             save.setVisibility(View.VISIBLE);
                         }
+                        isRecordActive = false;
                     }
                 }
-                isRecordActive = !isRecordActive;
+                return false;
             }
         });
     }

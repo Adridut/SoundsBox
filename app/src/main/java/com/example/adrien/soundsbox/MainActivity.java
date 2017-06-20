@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
     private static final String LOG_TAG = "AudioRecordTest";
 
-    //TODO change the logo
+    //TODO MINOR change the logo
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                             pads.get(position).isPlaying = false;
                             rv.setAdapter(adapter);
                         }
-                        //TODO design dialog
+                        //TODO MINOR design dialog
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setTitle(pads.get(position).name)
                                 .setItems(getResources().getStringArray(R.array.actions_array), new DialogInterface.OnClickListener() {
@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                             pads.get(position).color = getResources().getColor(R.color.colorAccent);
                                             pads.get(position).isPlaying = true;
                                         }
-                                        //TODO edit
                                         if (which == 1){
                                             AlertDialog.Builder editBuilder = new AlertDialog.Builder(MainActivity.this);
                                             // Get the layout inflater
