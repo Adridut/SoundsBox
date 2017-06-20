@@ -54,64 +54,63 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             }
         }
 
-
         rv = (RecyclerView) findViewById(R.id.pads_list);
 
         rv.addOnItemTouchListener(
                 new RecyclerItemClickListener(getApplicationContext(), rv, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        mFileName = pads.get(position).fileName;
-                        if (pads.get(position).isPlaying) {
-                            if (pads.get(position).mediaPlayer != null) {
-                                pads.get(position).mediaPlayer.release();
-                                pads.get(position).mediaPlayer = null;
+                        Pad p = pads.get(position);
+                        if (p.isPlaying) {
+                            if (p.mediaPlayer != null) {
+                                p.mediaPlayer.release();
+                                p.mediaPlayer = null;
                             }
-                            pads.get(position).color = getResources().getColor(R.color.colorPrimary);
-                            pads.get(position).isPlaying = false;
+                            p.color = getResources().getColor(R.color.colorPrimary);
+                            p.isPlaying = false;
                         } else {
-                            pads.get(position).mediaPlayer = new MediaPlayer();
+                            p.mediaPlayer = new MediaPlayer();
                             try {
-                                pads.get(position).mediaPlayer.setDataSource(mFileName);
-                                pads.get(position).mediaPlayer.prepare();
-                                pads.get(position).mediaPlayer.start();
+                                p.mediaPlayer.setDataSource(p.fileName);
+                                p.mediaPlayer.prepare();
+                                p.mediaPlayer.start();
                             } catch (IOException e) {
                                 Log.e(LOG_TAG, "prepare() failed");
                             }
-                            pads.get(position).color = getResources().getColor(R.color.colorAccent);
-                            pads.get(position).isPlaying = true;
+                            p.color = getResources().getColor(R.color.colorAccent);
+                            p.isPlaying = true;
                         }
                         rv.setAdapter(adapter);
                     }
 
                     @Override
                     public void onLongItemClick(View view, final int position) {
-                        if (pads.get(position).isPlaying) {
-                            if (pads.get(position).mediaPlayer != null) {
-                                pads.get(position).mediaPlayer.release();
-                                pads.get(position).mediaPlayer = null;
+                        final Pad p = pads.get(position);
+                        if (p.isPlaying) {
+                            if (p.mediaPlayer != null) {
+                                p.mediaPlayer.release();
+                                p.mediaPlayer = null;
                             }
-                            pads.get(position).color = getResources().getColor(R.color.colorPrimary);
-                            pads.get(position).isPlaying = false;
+                            p.color = getResources().getColor(R.color.colorPrimary);
+                            p.isPlaying = false;
                             rv.setAdapter(adapter);
                         }
                         //TODO MINOR design dialog
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setTitle(pads.get(position).name)
+                        builder.setTitle(p.name)
                                 .setItems(getResources().getStringArray(R.array.actions_array), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         if (which == 0) {
-                                            mFileName = pads.get(position).fileName;
                                             pads.get(position).mediaPlayer = new MediaPlayer();
                                             try {
-                                                pads.get(position).mediaPlayer.setDataSource(mFileName);
-                                                pads.get(position).mediaPlayer.prepare();
-                                                pads.get(position).mediaPlayer.start();
+                                                p.mediaPlayer.setDataSource(p.fileName);
+                                                p.mediaPlayer.prepare();
+                                                p.mediaPlayer.start();
                                             } catch (IOException e) {
                                                 Log.e(LOG_TAG, "prepare() failed");
                                             }
-                                            pads.get(position).color = getResources().getColor(R.color.colorAccent);
-                                            pads.get(position).isPlaying = true;
+                                            p.color = getResources().getColor(R.color.colorAccent);
+                                            p.isPlaying = true;
                                         }
                                         if (which == 1){
                                             AlertDialog.Builder editBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -123,22 +122,21 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                             View editView = inflater.inflate(R.layout.edit_dialog, null);
                                             final EditText newName = (EditText) editView.findViewById(R.id.new_name);
 
-                                            newName.setText(pads.get(position).name);
+                                            newName.setText(p.name);
 
                                             editBuilder.setView(editView)
+                                                    .setTitle("Edit " + p.name)
                                                     // Add action buttons
-                                                    .setTitle("Edit " + pads.get(position).name)
                                                     .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int id) {
-                                                            String oldName = pads.get(position).name;
-                                                            String fileName = pads.get(position).fileName;
-                                                            pads.get(position).name = String.valueOf(newName.getText());
-                                                            pads.get(position).fileName = fileName.substring(0, fileName.length() - (oldName.length() + 4)) + newName.getText()  + ".3gp";
-                                                            File newFile = new File(pads.get(position).fileName);
-                                                            pads.get(position).file.renameTo(newFile);
+                                                            String oldName = p.name;
+                                                            String oldFileName = p.fileName;
+                                                            p.name = String.valueOf(newName.getText());
+                                                            p.fileName = oldFileName.substring(0, oldFileName.length() - (oldName.length() + 4)) + newName.getText()  + ".3gp";
+                                                            File newFile = new File(p.fileName);
+                                                            p.file.renameTo(newFile);
                                                             rv.setAdapter(adapter);
-                                                            Log.i("FileName", pads.get(position).fileName);
                                                         }
                                                     })
                                                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -148,11 +146,11 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                         }
                                         if (which == 2) {
                                             AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(MainActivity.this);
-                                            deleteBuilder.setTitle("Delete " + pads.get(position).name + " ?");
+                                            deleteBuilder.setTitle("Delete " + p.name + " ?");
                                             deleteBuilder.setMessage("Do you really want to delete this sound ?");
                                             deleteBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
-                                                    pads.get(position).file.delete();
+                                                    p.file.delete();
                                                     pads.remove(position);
                                                     rv.setAdapter(adapter);
                                                 }
@@ -165,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                         }
                                         rv.setAdapter(adapter);
                                     }
-
                                 }).show();
                     }
                 })

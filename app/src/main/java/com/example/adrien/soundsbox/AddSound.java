@@ -66,8 +66,6 @@ public class AddSound extends Activity {
                 finish();
             }
         });
-
-        //TODO onLongClick
         record.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
