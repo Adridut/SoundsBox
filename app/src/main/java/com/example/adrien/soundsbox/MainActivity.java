@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                 p.mediaPlayer.setDataSource(p.fileName);
                                 p.mediaPlayer.prepare();
                                 p.mediaPlayer.start();
+                                p.mediaPlayer.setLooping(true);
                             } catch (IOException e) {
                                 Log.e(LOG_TAG, "prepare() failed");
                             }
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                 .setItems(getResources().getStringArray(R.array.actions_array), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         if (which == 0) {
-                                            pads.get(position).mediaPlayer = new MediaPlayer();
+                                            p.mediaPlayer = new MediaPlayer();
                                             try {
                                                 p.mediaPlayer.setDataSource(p.fileName);
                                                 p.mediaPlayer.prepare();
