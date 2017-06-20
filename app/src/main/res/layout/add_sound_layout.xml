@@ -11,8 +11,15 @@
         android:hint="Sound name"
         android:padding="5dp"
         android:maxLines="1"
-        android:layout_above="@+id/recordButton"
+        android:layout_above="@+id/middle_view"
         android:layout_centerHorizontal="true" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_centerVertical="true"
+        android:id="@+id/middle_view"
+        android:layout_margin="75dp"/>
 
     <ImageButton
         android:layout_width="100dp"
@@ -22,16 +29,17 @@
         android:layout_centerVertical="true"
         android:layout_marginTop="45dp"
         android:src="@drawable/ic_mic_white_36dp"
-        android:background="@drawable/rounded_accent_button" />
+        android:background="@drawable/rounded_accent_button"
+        android:visibility="gone"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/record_text"
-        android:layout_below="@+id/recordButton"
         android:layout_centerHorizontal="true"
+        android:layout_below="@id/middle_view"
         android:gravity="center"
-        android:text="Click to record"
+        android:text="Enter the name of the sound"
         android:padding="25dp"/>
 
 
@@ -44,7 +52,6 @@
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:src="@drawable/ic_done_white_24dp"
-        android:background="@drawable/rounded_accent_button"
-        android:visibility="gone"/>
+        android:background="@drawable/rounded_accent_button" />
 
 </RelativeLayout>

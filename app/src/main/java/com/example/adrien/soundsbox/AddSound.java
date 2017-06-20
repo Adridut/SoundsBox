@@ -31,6 +31,7 @@ public class AddSound extends Activity {
     EditText name;
     TextView recordText;
     boolean isRecordActive = false;
+    int saveCounter = 0;
 
     private MediaRecorder mRecorder = null;
 
@@ -55,15 +56,21 @@ public class AddSound extends Activity {
         record = (ImageButton) findViewById(R.id.recordButton);
         recordText = (TextView) findViewById(R.id.record_text);
 
-        //TODO force the user to name the sound (not already used) and edit the fileName
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("name", String.valueOf(name.getText()));
-                returnIntent.putExtra("fileName", mFileName);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
+                if (saveCounter == 0) {
+                    record.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.GONE);
+                    recordText.setText("Press the button while recording");
+                } else {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("name", String.valueOf(name.getText()));
+                    returnIntent.putExtra("fileName", mFileName);
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                }
+                saveCounter++;
             }
         });
         record.setOnLongClickListener(new View.OnLongClickListener() {
@@ -87,7 +94,7 @@ public class AddSound extends Activity {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             record.setBackground(getResources().getDrawable(R.drawable.rounded_accent_button));
                         }
-                        recordText.setText("Save your record or click here again to erase it and start a new one");
+                        recordText.setText("Save your record or press the button again to erase your record and start a new one");
                         stopRecording();
                         if (save.getVisibility() == View.GONE){
                             save.setVisibility(View.VISIBLE);
@@ -109,9 +116,7 @@ public class AddSound extends Activity {
                 break;
         }
         if (!permissionToRecordAccepted) finish();
-
     }
-
     private void startRecording() {
 
         mFileName = getFilesDir().getAbsolutePath() + "/" + String.valueOf(name.getText()) + ".3gp";
@@ -127,7 +132,6 @@ public class AddSound extends Activity {
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
-
         mRecorder.start();
     }
 

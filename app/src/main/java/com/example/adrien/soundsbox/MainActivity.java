@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     ArrayList<Pad> pads;
     RecyclerView rv;
     PadAdapter adapter;
-    String mFileName;
     File soundsDir;
 
     private MediaPlayer mPlayer = null;
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                 p.mediaPlayer.prepare();
                                 p.mediaPlayer.start();
                                 p.mediaPlayer.setLooping(true);
+                                Log.i("FILENAME", p.fileName);
                             } catch (IOException e) {
                                 Log.e(LOG_TAG, "prepare() failed");
                             }
