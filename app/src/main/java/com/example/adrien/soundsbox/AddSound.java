@@ -2,6 +2,8 @@ package com.example.adrien.soundsbox;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
@@ -17,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -27,11 +30,11 @@ import java.io.IOException;
 public class AddSound extends Activity {
 
     ImageButton record, save;
-    String mFileName;
+    String mFileName, errorMessage;
     EditText name;
     TextView recordText;
     boolean isRecordActive = false;
-    int saveCounter = 0;
+    boolean firstSave = true;
 
     private MediaRecorder mRecorder = null;
 
@@ -60,10 +63,22 @@ public class AddSound extends Activity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (saveCounter == 0) {
-                    record.setVisibility(View.VISIBLE);
-                    save.setVisibility(View.GONE);
-                    recordText.setText("Press the button while recording");
+                if (firstSave) {
+                    if (checkName(String.valueOf(name.getText()))){
+                        record.setVisibility(View.VISIBLE);
+                        save.setVisibility(View.GONE);
+                        name.setVisibility(View.GONE);
+                        recordText.setText("Press the button while recording");
+                        firstSave = false;
+                    } else {
+                        AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(AddSound.this);
+                        deleteBuilder.setTitle("Error");
+                        deleteBuilder.setMessage(errorMessage);
+                        deleteBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        }).show();
+                    }
                 } else {
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra("name", String.valueOf(name.getText()));
@@ -71,7 +86,6 @@ public class AddSound extends Activity {
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }
-                saveCounter++;
             }
         });
 
@@ -143,13 +157,44 @@ public class AddSound extends Activity {
         mRecorder = null;
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
         if (mRecorder != null) {
             mRecorder.release();
             mRecorder = null;
+        }
+    }
+
+    public boolean checkName(String name){
+        if (name.isEmpty()){
+            errorMessage = "You didn't set a name for your sound";
+            return false;
+        } else if (!checkOverwrittedName(name)){
+            errorMessage = "This name is already used for another sound";
+            return false;
+        } else  {
+            return true;
+        }
+    }
+
+    public boolean checkOverwrittedName (String name){
+        int isOverwritted = 0;
+        File soundsDir;
+
+        soundsDir = new File(getFilesDir().getAbsolutePath());
+        File[] soundsFiles = soundsDir.listFiles();
+
+        for (File f : soundsFiles) {
+            String fName = f.getName();
+            if (fName.endsWith(".3gp") && fName.substring(0, fName.length() - 4).equals(name)) {
+                isOverwritted = 1;
+            }
+        }
+        if (isOverwritted == 0){
+            return true;
+        } else {
+            return false;
         }
     }
 }
