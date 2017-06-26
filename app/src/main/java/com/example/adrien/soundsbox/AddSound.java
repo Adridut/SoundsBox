@@ -56,6 +56,7 @@ public class AddSound extends Activity {
         record = (ImageButton) findViewById(R.id.recordButton);
         recordText = (TextView) findViewById(R.id.record_text);
 
+        //TODO force the user to set a (not taken) name
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +74,7 @@ public class AddSound extends Activity {
                 saveCounter++;
             }
         });
+
         record.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

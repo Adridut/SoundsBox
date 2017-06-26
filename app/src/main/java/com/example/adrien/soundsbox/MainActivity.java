@@ -33,7 +33,11 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
     private static final String LOG_TAG = "AudioRecordTest";
 
+    //TODO extract strings
+    //TODO design
+    //TODO add settings in toolbar (language, credits, bugs...)
     //TODO MINOR change the logo
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
