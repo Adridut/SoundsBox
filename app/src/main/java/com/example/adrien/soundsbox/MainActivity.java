@@ -27,10 +27,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     ArrayList<Pad> pads;
     RecyclerView rv;
     PadAdapter adapter;
-    File soundsDir;
-
     private MediaPlayer mPlayer = null;
-
     private static final String LOG_TAG = "AudioRecordTest";
 
     //TODO extract strings
@@ -45,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         setContentView(R.layout.activity_main);
 
         // retrieving files
+        File soundsDir;
         soundsDir = new File(getFilesDir().getAbsolutePath());
         File[] soundsFiles = soundsDir.listFiles();
 

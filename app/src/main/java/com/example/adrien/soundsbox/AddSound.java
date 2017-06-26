@@ -59,7 +59,6 @@ public class AddSound extends Activity {
         record = (ImageButton) findViewById(R.id.recordButton);
         recordText = (TextView) findViewById(R.id.record_text);
 
-        //TODO force the user to set a (not taken) name
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,7 +178,7 @@ public class AddSound extends Activity {
     }
 
     public boolean checkOverwrittedName (String name){
-        int isOverwritted = 0;
+        boolean isOverwritted = false;
         File soundsDir;
 
         soundsDir = new File(getFilesDir().getAbsolutePath());
@@ -188,10 +187,10 @@ public class AddSound extends Activity {
         for (File f : soundsFiles) {
             String fName = f.getName();
             if (fName.endsWith(".3gp") && fName.substring(0, fName.length() - 4).equals(name)) {
-                isOverwritted = 1;
+                isOverwritted = true;
             }
         }
-        if (isOverwritted == 0){
+        if (!isOverwritted){
             return true;
         } else {
             return false;
