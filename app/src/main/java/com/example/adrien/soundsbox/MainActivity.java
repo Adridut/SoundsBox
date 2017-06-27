@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,13 +43,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setIcon(R.drawable.ic_settings_white_24dp);
-
 
         // retrieving files
         File soundsDir;
@@ -221,6 +215,10 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.settings_action) {
+            View menuItemView = findViewById(R.id.settings_action);
+            PopupMenu popupMenu = new PopupMenu(this, menuItemView);
+            popupMenu.inflate(R.menu.popup);
+            popupMenu.show();
             return true;
         }
 
