@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
     public static final int ADD_REQUEST_CODE = 1;
     ArrayList<Pad> pads;
+    int language;
     RecyclerView rv;
     PadAdapter adapter;
     private MediaPlayer mPlayer = null;
@@ -225,6 +226,25 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.action_language:
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("Select language")
+                                    .setSingleChoiceItems(R.array.languages, 0, new DialogInterface.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(DialogInterface arg0, int arg1) {
+                                            language = arg1;
+                                            Log.i("LANGUAGE", String.valueOf(arg1));
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    })
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    }).show();
                             return true;
                         case R.id.action_infos:
                             return true;
