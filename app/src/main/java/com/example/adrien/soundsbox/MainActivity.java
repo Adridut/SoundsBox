@@ -220,6 +220,18 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             PopupMenu popupMenu = new PopupMenu(this, menuItemView);
             popupMenu.inflate(R.menu.popup);
             popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_language:
+                            return true;
+                        case R.id.action_infos:
+                            return true;
+                        default:
+                            return true;
+                    }                }
+            });
             return true;
         }
 
