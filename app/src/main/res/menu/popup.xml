@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_photo"
+        android:id="@+id/action_language"
         android:title="Languages" />
 
     <item
-        android:id="@+id/action_video"
-        android:title="Infos and Credits" />
+        android:id="@+id/action_infos"
+        android:title="Infos and Credits"/>
 
 </menu>

@@ -32,10 +32,11 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     PadAdapter adapter;
     private MediaPlayer mPlayer = null;
     private static final String LOG_TAG = "AudioRecordTest";
+    ImageButton add;
 
     //TODO extract strings
     //TODO design
-    //TODO add settings in toolbar (language, credits, bugs...)
+    //TODO settings in toolbar
     //TODO MINOR change the logo
 
 
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                             p.isPlaying = false;
                             rv.setAdapter(adapter);
                         }
-                        //TODO MINOR design dialog
+                        //TODO use the toolbar instead of a dialog
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setTitle(p.name)
                                 .setItems(getResources().getStringArray(R.array.actions_array), new DialogInterface.OnClickListener() {
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         rv.setAdapter(adapter);
 
 
-        ImageButton add = (ImageButton) findViewById(R.id.add_button);
+        add = (ImageButton) findViewById(R.id.add_button);
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,8 +215,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.settings_action) {
-            View menuItemView = findViewById(R.id.settings_action);
+        if (id == R.id.action_settings) {
+            View menuItemView = findViewById(R.id.action_settings);
             PopupMenu popupMenu = new PopupMenu(this, menuItemView);
             popupMenu.inflate(R.menu.popup);
             popupMenu.show();
