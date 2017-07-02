@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
     //TODO extract strings
     //TODO design
-    //TODO settings in toolbar
+    //TODO test changing 3gp to mp3
     //TODO MINOR change the logo
 
 
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                             p.color = getResources().getColor(R.color.colorAccent);
                                             p.isPlaying = true;
                                         }
-                                        if (which == 1){
+                                        if (which == 1) {
                                             AlertDialog.Builder editBuilder = new AlertDialog.Builder(MainActivity.this);
                                             // Get the layout inflater
                                             LayoutInflater inflater = MainActivity.this.getLayoutInflater();
@@ -133,39 +133,37 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                             newName.setText(p.name);
 
                                             editBuilder.setView(editView)
-                                                    .setTitle("Edit " + p.name)
-                                                    // Add action buttons
-                                                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                                                    .setTitle(getString(R.string.edit) + " " + p.name)
+                                                    .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int id) {
                                                             String oldName = p.name;
                                                             String oldFileName = p.fileName;
                                                             p.name = String.valueOf(newName.getText());
-                                                            p.fileName = oldFileName.substring(0, oldFileName.length() - (oldName.length() + 4)) + newName.getText()  + ".3gp";
+                                                            p.fileName = oldFileName.substring(0, oldFileName.length() - (oldName.length() + 4)) + newName.getText() + ".3gp";
                                                             File newFile = new File(p.fileName);
                                                             p.file.renameTo(newFile);
                                                             rv.setAdapter(adapter);
                                                         }
                                                     })
-                                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int id) {
                                                         }
                                                     }).show();
                                         }
                                         if (which == 2) {
                                             AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(MainActivity.this);
-                                            deleteBuilder.setTitle("Delete " + p.name + " ?");
-                                            deleteBuilder.setMessage("Do you really want to delete this sound ?");
-                                            deleteBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            deleteBuilder.setTitle(getString(R.string.delete) + " " + p.name + " ?");
+                                            deleteBuilder.setMessage(R.string.delete_message);
+                                            deleteBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
                                                     p.file.delete();
                                                     pads.remove(position);
                                                     rv.setAdapter(adapter);
                                                 }
                                             });
-                                            deleteBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            deleteBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
-                                                    // User cancelled the dialog
                                                 }
                                             }).show();
                                         }
@@ -221,36 +219,41 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             PopupMenu popupMenu = new PopupMenu(this, menuItemView);
             popupMenu.inflate(R.menu.popup);
             popupMenu.show();
+            //TODO make language change avialable
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.action_language:
                             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setTitle("Select language")
+                            builder.setTitle(R.string.select_language)
                                     .setSingleChoiceItems(R.array.languages, 0, new DialogInterface.OnClickListener() {
-
                                         @Override
                                         public void onClick(DialogInterface arg0, int arg1) {
                                             language = arg1;
-                                            Log.i("LANGUAGE", String.valueOf(arg1));
+                                            // 0 = english, 1 = french, 2 = german
                                         }
                                     })
-                                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                         }
                                     })
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
                                         public void onClick(DialogInterface dialog, int which) {
                                         }
                                     }).show();
                             return true;
+                        //TODO make the action bar work (by creating a new activity)
                         case R.id.action_infos:
+                            setContentView(R.layout.infos_layout);
+                            getSupportActionBar().setTitle(R.string.infos_and_credits);
+                            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                             return true;
                         default:
                             return true;
-                    }                }
+                    }
+                }
             });
             return true;
         }
@@ -271,10 +274,9 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                 rv.setAdapter(adapter);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
             }
         }
-    }//onActivityResult
+    }
 
     @Override
     public void onItemClick(View view, int position) {

@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/sound_name"
-        android:hint="Sound name"
+        android:hint="@string/sound_name"
         android:padding="5dp"
         android:maxLines="1"
         android:layout_above="@+id/middle_view"
@@ -39,7 +39,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/middle_view"
         android:gravity="center"
-        android:text="Enter the name of the sound"
+        android:text="@string/enter_name"
         android:padding="25dp"/>
 
 
@@ -47,7 +47,6 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:id="@+id/save_button"
-        android:text="Save"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"

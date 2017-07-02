@@ -67,13 +67,13 @@ public class AddSound extends Activity {
                         record.setVisibility(View.VISIBLE);
                         save.setVisibility(View.GONE);
                         name.setVisibility(View.GONE);
-                        recordText.setText("Press the button while recording");
+                        recordText.setText(R.string.press_button);
                         firstSave = false;
                     } else {
                         AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(AddSound.this);
-                        deleteBuilder.setTitle("Error");
+                        deleteBuilder.setTitle(R.string.error);
                         deleteBuilder.setMessage(errorMessage);
-                        deleteBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        deleteBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                             }
                         }).show();
@@ -94,7 +94,7 @@ public class AddSound extends Activity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     record.setBackground(getResources().getDrawable(R.drawable.rounded_primary_button));
                 }
-                recordText.setText("Recording...");
+                recordText.setText(R.string.recording);
                 save.setVisibility(View.GONE);
                 startRecording();
                 isRecordActive = true;
@@ -109,7 +109,7 @@ public class AddSound extends Activity {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             record.setBackground(getResources().getDrawable(R.drawable.rounded_accent_button));
                         }
-                        recordText.setText("Save your record or press the button again to erase your record and start a new one");
+                        recordText.setText(R.string.save_message);
                         stopRecording();
                         if (save.getVisibility() == View.GONE){
                             save.setVisibility(View.VISIBLE);
@@ -167,10 +167,10 @@ public class AddSound extends Activity {
 
     public boolean checkName(String name){
         if (name.isEmpty()){
-            errorMessage = "You didn't set a name for your sound";
+            errorMessage = getString(R.string.no_name_error);
             return false;
         } else if (!checkOverwrittedName(name)){
-            errorMessage = "This name is already used for another sound";
+            errorMessage = getString(R.string.used_name_error);
             return false;
         } else  {
             return true;

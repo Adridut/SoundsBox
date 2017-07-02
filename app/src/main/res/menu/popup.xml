@@ -5,10 +5,10 @@
 
     <item
         android:id="@+id/action_language"
-        android:title="Languages" />
+        android:title="@string/languages" />
 
     <item
         android:id="@+id/action_infos"
-        android:title="Infos and Credits"/>
+        android:title="@string/infos_and_credits"/>
 
 </menu>

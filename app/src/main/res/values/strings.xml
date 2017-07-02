@@ -1,5 +1,24 @@
 <resources>
     <string name="app_name">Sounds Box</string>
+    <string name="sound_name">Sound name</string>
+    <string name="enter_name">Enter the name of the sound</string>
+    <string name="new_sound_name">New sound name</string>
+    <string name="settings">Settings</string>
+    <string name="languages">Languages</string>
+    <string name="infos_and_credits">Infos and Credits</string>
+    <string name="delete">Delete</string>
+    <string name="delete_message">Do you really want to delete this sound ?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_language">Select language</string>
+    <string name="press_button">Press the button while recording</string>
+    <string name="error">Error</string>
+    <string name="recording">Recording...</string>
+    <string name="save_message">Save your record or press the button again to erase your record and start a new one</string>
+    <string name="no_name_error">You didn\'t set a name for your sound</string>
+    <string name="used_name_error">This name is already used for another sound</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
     <string-array name="actions_array">
         <item>Play</item>
         <item>Edit</item>

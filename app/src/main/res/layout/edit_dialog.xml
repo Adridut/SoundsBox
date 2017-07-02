@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:hint="New sound name"
+        android:hint="@string/new_sound_name"
         android:id="@+id/new_name" />
 
 </RelativeLayout>
