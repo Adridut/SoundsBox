@@ -22,6 +22,7 @@ import android.widget.PopupMenu;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity implements PadAdapter.ItemClickListener {
@@ -34,9 +35,10 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     private MediaPlayer mPlayer = null;
     private static final String LOG_TAG = "AudioRecordTest";
     ImageButton add;
+    Locale locale;
 
-    //TODO extract strings
     //TODO design
+    //TODO translate strings
     //TODO test changing 3gp to mp3
     //TODO MINOR change the logo
 
