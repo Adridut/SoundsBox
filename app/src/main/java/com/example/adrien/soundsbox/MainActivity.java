@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.PopupMenu;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +27,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements PadAdapter.ItemClickListener {
 
     public static final int ADD_REQUEST_CODE = 1;
+    public static final int INFOS_REQUEST_CODE = 2;
     ArrayList<Pad> pads;
     int language;
     RecyclerView rv;
@@ -217,47 +217,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            View menuItemView = findViewById(R.id.action_settings);
-            PopupMenu popupMenu = new PopupMenu(this, menuItemView);
-            popupMenu.inflate(R.menu.popup);
-            popupMenu.show();
-            //TODO make language change avialable
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_language:
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setTitle(R.string.select_language)
-                                    .setSingleChoiceItems(R.array.languages, 0, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface arg0, int arg1) {
-                                            language = arg1;
-                                            // 0 = english, 1 = french, 2 = german
-                                        }
-                                    })
-                                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
-                                    })
-                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-
-                                        public void onClick(DialogInterface dialog, int which) {
-                                        }
-                                    }).show();
-                            return true;
-                        //TODO make the action bar work (by creating a new activity)
-                        case R.id.action_infos:
-                            setContentView(R.layout.infos_layout);
-                            getSupportActionBar().setTitle(R.string.infos_and_credits);
-                            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                            return true;
-                        default:
-                            return true;
-                    }
-                }
-            });
-            return true;
+            Intent i = new Intent(getApplicationContext(), Infos.class);
+            startActivityForResult(i, INFOS_REQUEST_CODE);
         }
 
         return super.onOptionsItemSelected(item);

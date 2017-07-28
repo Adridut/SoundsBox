@@ -22,6 +22,10 @@
             android:name=".AddSound"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".Infos"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
