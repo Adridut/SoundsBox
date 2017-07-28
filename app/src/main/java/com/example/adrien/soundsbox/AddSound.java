@@ -73,7 +73,7 @@ public class AddSound extends Activity {
                         AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(AddSound.this);
                         deleteBuilder.setTitle(R.string.error);
                         deleteBuilder.setMessage(errorMessage);
-                        deleteBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        deleteBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                             }
                         }).show();
@@ -134,7 +134,7 @@ public class AddSound extends Activity {
     }
     private void startRecording() {
 
-        mFileName = getFilesDir().getAbsolutePath() + "/" + String.valueOf(name.getText()) + ".3gp";
+        mFileName = getFilesDir().getAbsolutePath() + "/" + String.valueOf(name.getText()) + ".mp3";
 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -186,7 +186,7 @@ public class AddSound extends Activity {
 
         for (File f : soundsFiles) {
             String fName = f.getName();
-            if (fName.endsWith(".3gp") && fName.substring(0, fName.length() - 4).equals(name)) {
+            if (fName.endsWith(".mp3") && fName.substring(0, fName.length() - 4).equals(name)) {
                 isOverwritted = true;
             }
         }

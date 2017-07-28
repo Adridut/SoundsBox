@@ -38,8 +38,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     Locale locale;
 
     //TODO design
-    //TODO translate strings
-    //TODO test changing 3gp to mp3
+    //TODO MINOR translate strings
     //TODO MINOR change the logo
 
 
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
         for (File f : soundsFiles) {
             String name = f.getName();
-            if (name.endsWith(".3gp")) {
+            if (name.endsWith(".mp3")) {
                 pads.add(new Pad(name.substring(0, name.length() - 4), getFilesDir().getAbsolutePath() + "/" + name, false, Color.parseColor("#512DA8"), mPlayer, f));
             }
         }
