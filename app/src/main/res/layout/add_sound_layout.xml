@@ -10,6 +10,7 @@
         android:id="@+id/sound_name"
         android:hint="@string/sound_name"
         android:padding="5dp"
+        android:inputType="text"
         android:maxLines="1"
         android:layout_above="@+id/middle_view"
         android:layout_centerHorizontal="true" />

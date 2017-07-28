@@ -21,7 +21,6 @@ import android.widget.ImageButton;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity implements PadAdapter.ItemClickListener {
@@ -29,13 +28,11 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     public static final int ADD_REQUEST_CODE = 1;
     public static final int INFOS_REQUEST_CODE = 2;
     ArrayList<Pad> pads;
-    int language;
     RecyclerView rv;
     PadAdapter adapter;
     private MediaPlayer mPlayer = null;
     private static final String LOG_TAG = "AudioRecordTest";
     ImageButton add;
-    Locale locale;
 
     //TODO design
     //TODO MINOR translate strings
