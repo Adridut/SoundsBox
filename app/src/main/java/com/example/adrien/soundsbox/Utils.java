@@ -13,13 +13,15 @@ public class Utils extends Activity{
     public int checkName(String name, File soundsDir){
         if (name.isEmpty()){
             return 0;
-        } else if (!checkOverwrittedName(name, soundsDir)){
+        }
+        else if (!checkOverwrittedName(name, soundsDir)){
             return -1;
         } else  {
             return 1;
         }
     }
 
+    //check if the name is already used for another sound
     public boolean checkOverwrittedName (String name, File soundsDir){
         boolean isOverwritted = false;
 

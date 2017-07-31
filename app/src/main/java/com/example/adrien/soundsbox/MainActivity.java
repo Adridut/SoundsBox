@@ -127,24 +127,25 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                             // Inflate and set the layout for the dialog
                                             // Pass null as the parent view because its going in the dialog layout
                                             View editView = inflater.inflate(R.layout.edit_dialog, null);
-                                            final EditText newName = (EditText) editView.findViewById(R.id.new_name);
+                                            final EditText newNameET = (EditText) editView.findViewById(R.id.new_name);
 
-                                            newName.setText(p.name);
+                                            newNameET.setText(p.name);
 
                                             editBuilder.setView(editView)
                                                     .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int id) {
-                                                            if (utils.checkName(String.valueOf(newName.getText()), soundsDir) == 1){
+                                                            String newName = String.valueOf(newNameET.getText());
+                                                            if (utils.checkName(newName, soundsDir) == 1){
                                                                 String oldName = p.name;
                                                                 String oldFileName = p.fileName;
-                                                                p.name = String.valueOf(newName.getText());
-                                                                p.fileName = oldFileName.substring(0, oldFileName.length() - (oldName.length() + 4)) + newName.getText() + ".mp3";
+                                                                p.name = newName;
+                                                                p.fileName = oldFileName.substring(0, oldFileName.length() - (oldName.length() + 4)) + newNameET.getText() + ".mp3";
                                                                 File newFile = new File(p.fileName);
                                                                 p.file.renameTo(newFile);
                                                                 rv.setAdapter(adapter);
-                                                            } else if (!String.valueOf(newName.getText()).equals(p.name)){
-                                                                if (utils.checkName(String.valueOf(newName.getText()), soundsDir) == 0){
+                                                            } else if (!newName.equals(p.name)){
+                                                                if (utils.checkName(newName, soundsDir) == 0){
                                                                     errorMessage = getString(R.string.no_name_error);
                                                                 } else {
                                                                     errorMessage = getString(R.string.used_name_error);
@@ -225,7 +226,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent i = new Intent(getApplicationContext(), Infos.class);
             startActivityForResult(i, INFOS_REQUEST_CODE);
