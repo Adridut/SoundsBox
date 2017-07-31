@@ -103,8 +103,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                         }
                         //TODO use the toolbar instead of a dialog
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setTitle(p.name)
-                                .setItems(getResources().getStringArray(R.array.actions_array), new DialogInterface.OnClickListener() {
+                        builder.setItems(getResources().getStringArray(R.array.actions_array), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         if (which == 0) {
                                             p.mediaPlayer = new MediaPlayer();
@@ -131,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                             newName.setText(p.name);
 
                                             editBuilder.setView(editView)
-                                                    .setTitle(getString(R.string.edit) + " " + p.name)
                                                     .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int id) {
@@ -151,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                         }
                                         if (which == 2) {
                                             AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(MainActivity.this);
-                                            deleteBuilder.setTitle(getString(R.string.delete) + " " + p.name + " ?");
                                             deleteBuilder.setMessage(R.string.delete_message);
                                             deleteBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
