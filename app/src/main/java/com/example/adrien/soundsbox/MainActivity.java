@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     private MediaPlayer mPlayer = null;
     private static final String LOG_TAG = "AudioRecordTest";
     ImageButton add;
+    String errorMessage;
+    Utils utils = new Utils();
 
     //TODO design
     //TODO MINOR translate strings
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         setContentView(R.layout.activity_main);
 
         // retrieving files
-        File soundsDir;
+        final File soundsDir;
         soundsDir = new File(getFilesDir().getAbsolutePath());
         File[] soundsFiles = soundsDir.listFiles();
 
@@ -133,13 +135,28 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                                                     .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int id) {
-                                                            String oldName = p.name;
-                                                            String oldFileName = p.fileName;
-                                                            p.name = String.valueOf(newName.getText());
-                                                            p.fileName = oldFileName.substring(0, oldFileName.length() - (oldName.length() + 4)) + newName.getText() + ".3gp";
-                                                            File newFile = new File(p.fileName);
-                                                            p.file.renameTo(newFile);
-                                                            rv.setAdapter(adapter);
+                                                            if (utils.checkName(String.valueOf(newName.getText()), soundsDir) == 1){
+                                                                String oldName = p.name;
+                                                                String oldFileName = p.fileName;
+                                                                p.name = String.valueOf(newName.getText());
+                                                                p.fileName = oldFileName.substring(0, oldFileName.length() - (oldName.length() + 4)) + newName.getText() + ".mp3";
+                                                                File newFile = new File(p.fileName);
+                                                                p.file.renameTo(newFile);
+                                                                rv.setAdapter(adapter);
+                                                            } else if (!String.valueOf(newName.getText()).equals(p.name)){
+                                                                if (utils.checkName(String.valueOf(newName.getText()), soundsDir) == 0){
+                                                                    errorMessage = getString(R.string.no_name_error);
+                                                                } else {
+                                                                    errorMessage = getString(R.string.used_name_error);
+                                                                }
+                                                                AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(MainActivity.this);
+                                                                deleteBuilder.setTitle(R.string.error);
+                                                                deleteBuilder.setMessage(errorMessage);
+                                                                deleteBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                                    public void onClick(DialogInterface dialog, int id) {
+                                                                    }
+                                                                }).show();
+                                                            }
                                                         }
                                                     })
                                                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
