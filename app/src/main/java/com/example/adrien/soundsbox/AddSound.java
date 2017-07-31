@@ -35,6 +35,7 @@ public class AddSound extends Activity {
     TextView recordText;
     boolean isRecordActive = false;
     boolean firstSave = true;
+    Utils utils = new Utils();
 
     private MediaRecorder mRecorder = null;
 
@@ -63,13 +64,19 @@ public class AddSound extends Activity {
             @Override
             public void onClick(View v) {
                 if (firstSave) {
-                    if (checkName(String.valueOf(name.getText()))){
+                    File soundsDir = new File(getFilesDir().getAbsolutePath());
+                    if (utils.checkName(String.valueOf(name.getText()), soundsDir) == 1){
                         record.setVisibility(View.VISIBLE);
                         save.setVisibility(View.GONE);
                         name.setVisibility(View.GONE);
                         recordText.setText(R.string.press_button);
                         firstSave = false;
                     } else {
+                        if (utils.checkName(String.valueOf(name.getText()), soundsDir) == 0){
+                            errorMessage = getString(R.string.no_name_error);
+                        } else {
+                            errorMessage = getString(R.string.used_name_error);
+                        }
                         AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(AddSound.this);
                         deleteBuilder.setTitle(R.string.error);
                         deleteBuilder.setMessage(errorMessage);
@@ -162,38 +169,6 @@ public class AddSound extends Activity {
         if (mRecorder != null) {
             mRecorder.release();
             mRecorder = null;
-        }
-    }
-
-    public boolean checkName(String name){
-        if (name.isEmpty()){
-            errorMessage = getString(R.string.no_name_error);
-            return false;
-        } else if (!checkOverwrittedName(name)){
-            errorMessage = getString(R.string.used_name_error);
-            return false;
-        } else  {
-            return true;
-        }
-    }
-
-    public boolean checkOverwrittedName (String name){
-        boolean isOverwritted = false;
-        File soundsDir;
-
-        soundsDir = new File(getFilesDir().getAbsolutePath());
-        File[] soundsFiles = soundsDir.listFiles();
-
-        for (File f : soundsFiles) {
-            String fName = f.getName();
-            if (fName.endsWith(".mp3") && fName.substring(0, fName.length() - 4).equals(name)) {
-                isOverwritted = true;
-            }
-        }
-        if (!isOverwritted){
-            return true;
-        } else {
-            return false;
         }
     }
 }
