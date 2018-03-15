@@ -1,14 +1,19 @@
 package com.example.adrien.soundsbox;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,6 +50,15 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     String errorMessage;
     Utils utils = new Utils();
     private StorageReference mStorage;
+    private ProgressDialog progressDialog;
+
+    public  static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
+    private boolean permissionToRecordAccepted = false;
+    private boolean permissionToAccesInternet = false;
+    private boolean permissionToWriteExternalStorage = false;
+    private String[] permissions = {android.Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
 
     //TODO design
     //TODO MINOR translate strings
@@ -54,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_MULTIPLE_REQUEST);
 
         mStorage = FirebaseStorage.getInstance().getReference();
 
@@ -224,6 +240,22 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSIONS_MULTIPLE_REQUEST:
+                permissionToRecordAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+                permissionToAccesInternet = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                permissionToWriteExternalStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;
+        }
+        if (!permissionToRecordAccepted) finish();
+        if (!permissionToAccesInternet) finish();
+        if (!permissionToWriteExternalStorage) finish();
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -256,7 +288,18 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                 adapter = new PadAdapter(this, pads);
                 adapter.setClickListener(this);
                 rv.setAdapter(adapter);
+                progressDialog = new ProgressDialog(this);
 
+                progressDialog.setMessage("Uploading...");
+                progressDialog.show();
+                StorageReference filePath = mStorage.child("Audio").child(name + ".3gp");
+                Uri uri = Uri.fromFile(new File(mfileName));
+                filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                    }
+                });
             }
             if (resultCode == Activity.RESULT_CANCELED) {
             }

@@ -41,19 +41,12 @@ public class AddSound extends Activity {
 
     private static final String LOG_TAG = "AudioRecordTest";
 
-    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-
-    // Requesting permission to RECORD_AUDIO
-    private boolean permissionToRecordAccepted = false;
-    private String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_sound_layout);
-
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
         name = (EditText) findViewById(R.id.sound_name);
         save = (ImageButton) findViewById(R.id.save_button);
@@ -130,16 +123,7 @@ public class AddSound extends Activity {
         });
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_RECORD_AUDIO_PERMISSION:
-                permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;
-        }
-        if (!permissionToRecordAccepted) finish();
-    }
+
     private void startRecording() {
 
         mFileName = getFilesDir().getAbsolutePath() + "/" + String.valueOf(name.getText()) + ".3gp";
