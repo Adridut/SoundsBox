@@ -91,6 +91,7 @@ public class AddSound extends Activity {
                     returnIntent.putExtra("fileName", mFileName);
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
+
                 }
             }
         });
@@ -141,7 +142,7 @@ public class AddSound extends Activity {
     }
     private void startRecording() {
 
-        mFileName = getFilesDir().getAbsolutePath() + "/" + String.valueOf(name.getText()) + ".mp3";
+        mFileName = getFilesDir().getAbsolutePath() + "/" + String.valueOf(name.getText()) + ".3gp";
 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);

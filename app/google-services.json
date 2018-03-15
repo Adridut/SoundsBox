@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "143951159187",
+    "firebase_url": "https://sounds-box-ef0d4.firebaseio.com",
+    "project_id": "sounds-box-ef0d4",
+    "storage_bucket": "sounds-box-ef0d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143951159187:android:7c2aef9e1d771847",
+        "android_client_info": {
+          "package_name": "com.example.adrien.soundsbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143951159187-itrhj6pv2ab9rrkdmci95pmfaf1meiqs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.adrien.soundsbox",
+            "certificate_hash": "59bfcfda44213fcbbc43fe92ac83916828521368"
+          }
+        },
+        {
+          "client_id": "143951159187-38jeredai2umh58hq2qdep4ug7u0kffk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk3ttnpyaoyHwLm7lte_TWq4Mzp15EpIA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "143951159187-38jeredai2umh58hq2qdep4ug7u0kffk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

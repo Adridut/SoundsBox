@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,16 +44,18 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     ImageButton add;
     String errorMessage;
     Utils utils = new Utils();
+    private StorageReference mStorage;
 
     //TODO design
     //TODO MINOR translate strings
-    //TODO MINOR change the logo
 
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mStorage = FirebaseStorage.getInstance().getReference();
 
         // retrieving files
         final File soundsDir;
@@ -55,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
         for (File f : soundsFiles) {
             String name = f.getName();
-            if (name.endsWith(".mp3")) {
+            if (name.endsWith(".3gp")) {
                 pads.add(new Pad(name.substring(0, name.length() - 4), getFilesDir().getAbsolutePath() + "/" + name, false, Color.parseColor("#512DA8"), mPlayer, f));
             }
         }
@@ -245,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                 adapter = new PadAdapter(this, pads);
                 adapter.setClickListener(this);
                 rv.setAdapter(adapter);
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {
             }
