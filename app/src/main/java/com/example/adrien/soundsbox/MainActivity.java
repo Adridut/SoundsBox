@@ -27,6 +27,11 @@ import android.widget.ImageButton;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -49,7 +54,11 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     ImageButton add;
     String errorMessage;
     Utils utils = new Utils();
+
     private StorageReference mStorage;
+    private DatabaseReference mDatabase;
+    File localFile = new File("");
+
     private ProgressDialog progressDialog;
 
     public  static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
@@ -72,23 +81,49 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_MULTIPLE_REQUEST);
 
         mStorage = FirebaseStorage.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        try {
+             localFile = File.createTempFile("Audio", "3gp");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        pads = new ArrayList<>();
 
         // retrieving files
         final File soundsDir;
         soundsDir = new File(getFilesDir().getAbsolutePath());
         File[] soundsFiles = soundsDir.listFiles();
 
-        pads = new ArrayList<>();
-
-        for (File f : soundsFiles) {
+       /* for (File f : soundsFiles) {
             String name = f.getName();
             if (name.endsWith(".3gp")) {
-                pads.add(new Pad(name.substring(0, name.length() - 4), getFilesDir().getAbsolutePath() + "/" + name, false, Color.parseColor("#512DA8"), mPlayer, f));
+                pads.add(new Pad(name.substring(0, name.length() - 4), getFilesDir().getAbsolutePath() + "/" + name,
+                        false, Color.parseColor("#512DA8"), mPlayer, f));
             }
-        }
+        } */
+
+        mDatabase.child("SoundsNames").child("TEST").setValue("");
+        mDatabase.child("SoundsNames").child("TEST").removeValue();
+        mDatabase.push(); //call onDataChange
+        mDatabase.child("SoundsNames").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    System.out.println("JAA " + postSnapshot.getValue());
+                    mStorage.child("Audio/" + postSnapshot.getValue() + ".3gp").getFile(localFile);
+                    pads.add(new Pad(String.valueOf(postSnapshot.getValue()), localFile.getAbsolutePath(),
+                            false, Color.parseColor("#512DA8"), mPlayer, localFile));
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         rv = (RecyclerView) findViewById(R.id.pads_list);
-
         rv.addOnItemTouchListener(
                 new RecyclerItemClickListener(getApplicationContext(), rv, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -282,9 +317,10 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
 
         if (requestCode == ADD_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                String name = data.getStringExtra("name");
-                String mfileName = data.getStringExtra("fileName");
-                pads.add(new Pad(name, mfileName, false, getResources().getColor(R.color.colorPrimary), mPlayer, new File(mfileName)));
+                final String name = data.getStringExtra("name");
+                final String mfileName = data.getStringExtra("fileName");
+                pads.add(new Pad(name, mfileName, false, getResources().getColor(R.color.colorPrimary),
+                        mPlayer, new File(mfileName)));
                 adapter = new PadAdapter(this, pads);
                 adapter.setClickListener(this);
                 rv.setAdapter(adapter);
@@ -297,6 +333,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                 filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        mDatabase.child("SoundsNames").child(name).setValue(name);
+                        mDatabase.push();
                         progressDialog.dismiss();
                     }
                 });
