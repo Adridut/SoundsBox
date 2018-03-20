@@ -4,7 +4,9 @@ import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -54,19 +56,25 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
     ImageButton add;
     String errorMessage;
     Utils utils = new Utils();
+    Context c = this;
 
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
-    File localFile = new File("");
+    File localFile = File.createTempFile("Audio", "3gp");
+
+
 
     private ProgressDialog progressDialog;
 
-    public  static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
+    public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     private boolean permissionToRecordAccepted = false;
     private boolean permissionToAccesInternet = false;
     private boolean permissionToWriteExternalStorage = false;
     private String[] permissions = {android.Manifest.permission.RECORD_AUDIO,
             Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+    public MainActivity() throws IOException {
+    }
 
 
     //TODO design
@@ -83,11 +91,8 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
         mStorage = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        try {
-             localFile = File.createTempFile("Audio", "3gp");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        progressDialog = new ProgressDialog(this);
+
 
         pads = new ArrayList<>();
 
@@ -104,22 +109,24 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
             }
         } */
 
-        mDatabase.child("SoundsNames").child("TEST").setValue("");
-        mDatabase.child("SoundsNames").child("TEST").removeValue();
-        mDatabase.push(); //call onDataChange
         mDatabase.child("SoundsNames").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                progressDialog.setMessage("Downloading...");
+                progressDialog.show();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     System.out.println("JAA " + postSnapshot.getValue());
                     mStorage.child("Audio/" + postSnapshot.getValue() + ".3gp").getFile(localFile);
                     pads.add(new Pad(String.valueOf(postSnapshot.getValue()), localFile.getAbsolutePath(),
                             false, Color.parseColor("#512DA8"), mPlayer, localFile));
                 }
+                rv.setAdapter(adapter);
+                progressDialog.dismiss();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                System.out.println(databaseError);
             }
         });
 
@@ -168,83 +175,83 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                         //TODO use the toolbar instead of a dialog
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setItems(getResources().getStringArray(R.array.actions_array), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (which == 0) {
-                                            p.mediaPlayer = new MediaPlayer();
-                                            try {
-                                                p.mediaPlayer.setDataSource(p.fileName);
-                                                p.mediaPlayer.prepare();
-                                                p.mediaPlayer.start();
-                                            } catch (IOException e) {
-                                                Log.e(LOG_TAG, "prepare() failed");
-                                            }
-                                            p.color = getResources().getColor(R.color.colorAccent);
-                                            p.isPlaying = true;
-                                        }
-                                        if (which == 1) {
-                                            AlertDialog.Builder editBuilder = new AlertDialog.Builder(MainActivity.this);
-                                            // Get the layout inflater
-                                            LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == 0) {
+                                    p.mediaPlayer = new MediaPlayer();
+                                    try {
+                                        p.mediaPlayer.setDataSource(p.fileName);
+                                        p.mediaPlayer.prepare();
+                                        p.mediaPlayer.start();
+                                    } catch (IOException e) {
+                                        Log.e(LOG_TAG, "prepare() failed");
+                                    }
+                                    p.color = getResources().getColor(R.color.colorAccent);
+                                    p.isPlaying = true;
+                                }
+                                if (which == 1) {
+                                    AlertDialog.Builder editBuilder = new AlertDialog.Builder(MainActivity.this);
+                                    // Get the layout inflater
+                                    LayoutInflater inflater = MainActivity.this.getLayoutInflater();
 
-                                            // Inflate and set the layout for the dialog
-                                            // Pass null as the parent view because its going in the dialog layout
-                                            View editView = inflater.inflate(R.layout.edit_dialog, null);
-                                            final EditText newNameET = (EditText) editView.findViewById(R.id.new_name);
+                                    // Inflate and set the layout for the dialog
+                                    // Pass null as the parent view because its going in the dialog layout
+                                    View editView = inflater.inflate(R.layout.edit_dialog, null);
+                                    final EditText newNameET = (EditText) editView.findViewById(R.id.new_name);
 
-                                            newNameET.setText(p.name);
+                                    newNameET.setText(p.name);
 
-                                            editBuilder.setView(editView)
-                                                    .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            String newName = String.valueOf(newNameET.getText());
-                                                            if (utils.checkName(newName, soundsDir) == 1){
-                                                                String oldName = p.name;
-                                                                String oldFileName = p.fileName;
-                                                                p.name = newName;
-                                                                p.fileName = oldFileName.substring(0, oldFileName.length() - (oldName.length() + 4)) + newNameET.getText() + ".mp3";
-                                                                File newFile = new File(p.fileName);
-                                                                p.file.renameTo(newFile);
-                                                                rv.setAdapter(adapter);
-                                                            } else if (!newName.equals(p.name)){
-                                                                if (utils.checkName(newName, soundsDir) == 0){
-                                                                    errorMessage = getString(R.string.no_name_error);
-                                                                } else {
-                                                                    errorMessage = getString(R.string.used_name_error);
-                                                                }
-                                                                AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(MainActivity.this);
-                                                                deleteBuilder.setTitle(R.string.error);
-                                                                deleteBuilder.setMessage(errorMessage);
-                                                                deleteBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                                                    public void onClick(DialogInterface dialog, int id) {
-                                                                    }
-                                                                }).show();
-                                                            }
-                                                        }
-                                                    })
-                                                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                        }
-                                                    }).show();
-                                        }
-                                        if (which == 2) {
-                                            AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(MainActivity.this);
-                                            deleteBuilder.setMessage(R.string.delete_message);
-                                            deleteBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                    editBuilder.setView(editView)
+                                            .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                                                @Override
                                                 public void onClick(DialogInterface dialog, int id) {
-                                                    p.file.delete();
-                                                    pads.remove(position);
-                                                    rv.setAdapter(adapter);
+                                                    String newName = String.valueOf(newNameET.getText());
+                                                    if (utils.checkName(newName, soundsDir) == 1) {
+                                                        String oldName = p.name;
+                                                        String oldFileName = p.fileName;
+                                                        p.name = newName;
+                                                        p.fileName = oldFileName.substring(0, oldFileName.length() - (oldName.length() + 4)) + newNameET.getText() + ".mp3";
+                                                        File newFile = new File(p.fileName);
+                                                        p.file.renameTo(newFile);
+                                                        rv.setAdapter(adapter);
+                                                    } else if (!newName.equals(p.name)) {
+                                                        if (utils.checkName(newName, soundsDir) == 0) {
+                                                            errorMessage = getString(R.string.no_name_error);
+                                                        } else {
+                                                            errorMessage = getString(R.string.used_name_error);
+                                                        }
+                                                        AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(MainActivity.this);
+                                                        deleteBuilder.setTitle(R.string.error);
+                                                        deleteBuilder.setMessage(errorMessage);
+                                                        deleteBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                            }
+                                                        }).show();
+                                                    }
                                                 }
-                                            });
-                                            deleteBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                            })
+                                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
                                                 }
                                             }).show();
+                                }
+                                if (which == 2) {
+                                    AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(MainActivity.this);
+                                    deleteBuilder.setMessage(R.string.delete_message);
+                                    deleteBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            p.file.delete();
+                                            pads.remove(position);
+                                            rv.setAdapter(adapter);
                                         }
-                                        rv.setAdapter(adapter);
-                                    }
-                                }).show();
+                                    });
+                                    deleteBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    }).show();
+                                }
+                                rv.setAdapter(adapter);
+                            }
+                        }).show();
                     }
                 })
         );
@@ -324,7 +331,6 @@ public class MainActivity extends AppCompatActivity implements PadAdapter.ItemCl
                 adapter = new PadAdapter(this, pads);
                 adapter.setClickListener(this);
                 rv.setAdapter(adapter);
-                progressDialog = new ProgressDialog(this);
 
                 progressDialog.setMessage("Uploading...");
                 progressDialog.show();
